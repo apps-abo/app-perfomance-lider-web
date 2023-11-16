@@ -12,8 +12,8 @@ import TextField from '@mui/material/TextField';
 import * as yup from 'yup';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import ErrorModal from '../components/Modals/ModalError';
-import Seo from '../components/Seo';
+import ErrorModal from '@/components/Modals/ModalError';
+import Seo from '@/components/Seo';
 
 
 import {
@@ -23,7 +23,7 @@ import {
 	FlexWrap,
 	MainPage,
 	TextDev,
-} from './recuperar-senha/styles';
+} from './styles';
 
 interface IForm {
 	senha: string;
@@ -33,9 +33,7 @@ interface IForm {
 interface IResponde {
 	error: string;
 }
-interface INovaSenhaProps {
-	token :string;
-}
+
 
 
 const validationSchema = yup.object({
@@ -168,10 +166,21 @@ export default function NovaSenha() {
 	);
 }
 
- export const getServerSideProps: GetServerSideProps = async ({ query }) => {
- 	return {
- 		props: {
-			token :query.token
-		},
- 	};
- };
+// export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+
+// 	const session = await getSession({ req });
+
+
+// 	if (session) {
+// 		return {
+// 			redirect: {
+// 				permanent: false,
+// 				destination: '/',
+// 			},
+// 		};
+// 	}
+
+// 	return {
+// 		props: {},
+// 	};
+// };
