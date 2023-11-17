@@ -16,7 +16,7 @@ const Seo: FC<IProps> = ({ title, description }) => {
 			</style>
 			<title>{title}</title>
 			{description && <meta name="description" content={description} />}
-			<link rel="icon" type="image/png" sizes="32x18" href="/images/Favico-AppLider2023.png" />
+			<link rel="icon" type="image/png" sizes="32x18" href="/favicon.ico" />
 			<style>
 				@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 			</style>

@@ -74,6 +74,7 @@ export default function NovaSenha({ token }: ITokenProps) {
             alt="Descrição da imagem"
             width={85}
             height={80}
+			style={{ borderRadius: '10px' }}
           />
           <h1>Carregando</h1>
           <TextDev>
@@ -96,6 +97,7 @@ export default function NovaSenha({ token }: ITokenProps) {
             alt="Descrição da imagem"
             width={85}
             height={80}
+			style={{ borderRadius: '10px' }}
           />
           <h1>Link de Recuperação de Senha Inválido</h1>
           <p>Gere um novo link por favor!</p>
