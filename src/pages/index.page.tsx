@@ -1,177 +1,123 @@
-import { ChangeEvent, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import Image from "next/image";
 
-import { GetServerSideProps } from 'next';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
+import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 
-import { FormControlLabel, Switch } from '@mui/material';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import * as yup from "yup";
 
-import * as yup from 'yup';
+import { yupResolver } from "@hookform/resolvers/yup";
+import { validarToken } from "@/services/recuperar-senha";
 
-import { yupResolver } from '@hookform/resolvers/yup';
-import ErrorModal from '../components/Modals/ModalError';
-import Seo from '../components/Seo';
+import { DivLinkValid, DivTextLogin, TextDev } from "./styles";
+import TrocaImagensAutomatica from "@/components/SliderImage";
 
-
-import {
-	Card,
-	DivImage,
-	DivTextLogin,
-	FlexWrap,
-	MainPage,
-	TextDev,
-} from './recuperar-senha/styles';
-
-interface IForm {
-	senha: string;
-	verificacaosenha: string;
+interface ITokenProps {
+  token: string;
 }
 
-interface IResponde {
-	error: string;
+export default function NovaSenha({ token }: ITokenProps) {
+  const [checked, setChecked] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const router = useRouter();
+
+  const validatorTokenfunction = useCallback(async () => {
+    try {
+      setLoading(true);
+      if (token) {
+        const response = await validarToken(token);
+        console.log(response);
+        if (response.status === 200) {
+          setChecked(true);
+          router.push("/recuperar-senha");
+        }
+        if (response.status === 400) {
+          return (
+            <>
+              <TrocaImagensAutomatica />
+              <DivLinkValid>
+                <Image
+                  src="/images/logo-abo.png"
+                  alt="Descrição da imagem"
+                  width={75.8}
+                  height={70}
+                />
+                <DivTextLogin>
+                  <h1>Link de Recuperação de Senha Inválido</h1>
+                  <p>Gere um novo link por favor!</p>
+                </DivTextLogin>
+              </DivLinkValid>
+            </>
+          );
+        } else {
+          setChecked(false);
+        }
+      }
+    } catch (error) {
+      setChecked(false);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+  useEffect(() => {
+    validatorTokenfunction();
+  }, [token]);
+  if (loading) {
+    return (
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <TrocaImagensAutomatica />
+        <DivLinkValid>
+          <Image
+            src="/images/Favico-AppLider2023.png"
+            alt="Descrição da imagem"
+            width={85}
+            height={80}
+          />
+          <h1>Carregando</h1>
+          <TextDev>
+            <p>
+              Desenvolvido por Imago Dev | © Associação Brasileira de
+              Ontopsicologia
+            </p>
+          </TextDev>
+        </DivLinkValid>
+      </div>
+    );
+  }
+  if (!checked) {
+    return (
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <TrocaImagensAutomatica />
+        <DivLinkValid>
+          <Image
+            src="/images/Favico-AppLider2023.png"
+            alt="Descrição da imagem"
+            width={85}
+            height={80}
+          />
+          <h1>Link de Recuperação de Senha Inválido</h1>
+          <p>Gere um novo link por favor!</p>
+          <TextDev>
+            <p>
+              Desenvolvido por Imago Dev | © Associação Brasileira de
+              Ontopsicologia
+            </p>
+          </TextDev>
+        </DivLinkValid>
+      </div>
+    );
+  }
 }
-interface INovaSenhaProps {
-	token :string;
-}
+export const getServerSideProps: GetServerSideProps<ITokenProps> = async ({
+  query,
+}) => {
+  const token = query.token ? String(query.token) : "";
 
-
-const validationSchema = yup.object({
-	senha: yup.string().required('Campo obrigatório'),
-	verificacaosenha: yup.string().oneOf([yup.ref('senha')], 'As senhas devem coincidir').required('Campo obrigatório'),
-});
-
-export default function NovaSenha() {
-	const [checked, setChecked] = useState<boolean>(false);
-	const [errorModalOpen, setErrorModalOpen] = useState(false)
-    const [errorModalOpenMesage, setErrorModalOpenMesage] = useState<
-    IResponde | undefined
-    >();
-
-    const handleShowErrorModal = (result: IResponde | undefined) => {
-        setErrorModalOpen(true);
-        setErrorModalOpenMesage(result);
-        };
-
-	const handleCloseErrorModal = () => {
-		setErrorModalOpen(false);
-	};
-
-	const handleChangeCheck = (event: ChangeEvent<HTMLInputElement>) => {
-		setChecked(event.target.checked);
-	};
-	const router = useRouter();
-	const {
-		handleSubmit,
-		formState: { errors },
-		setValue,
-	} = useForm<IForm>({
-		mode: 'onChange',
-		resolver: yupResolver(validationSchema),
-	});
-
-	const callbackUrl = decodeURI((router.query?.callbackUrl as string) ?? '/');
-
-    const submitForm = async (data: IForm) => {
-
-			router.push(callbackUrl);
-		
-			//handleShowErrorModal(result);
-		
-	};
-
-	const handleChange =
-		(name: 'senha' | 'verificacaosenha') =>
-			(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-				setValue(name, e.target.value, { shouldValidate: true });
-			};
-
-	return (
-		<>
-			{ <Seo
-				title="Redefinição de Senha"
-				description="Pagina para realizar redefinição de senha  do aplicativo Líder da Associação Brasileira de Ontopsicologia"
-			/> }
-			<MainPage>
-				<DivImage />
-				<Card>
-					<FlexWrap>
-						<Image
-							src="/images/logo-abo.png"
-							alt="Descrição da imagem"
-							width={75.8}
-							height={70}
-						/>
-						<DivTextLogin>
-							<h1>Recuperar Senha</h1>
-							<p>Insira sua nova senha</p>
-						</DivTextLogin>
-						<TextField
-							margin="normal"
-							required
-							fullWidth
-							id="senha"
-							label="Senha"
-							name="senha"
-							autoComplete="senha"
-							onChange={handleChange('senha')}
-							autoFocus
-							helperText={errors.senha?.message}
-							sx={{ borderRadius: 1 }}
-						/>
-						<TextField
-							margin="normal"
-							required
-							fullWidth
-							name="vsenha"
-							label="Verificacao de Senha"
-							type="vsenha"
-							id="vsenha"
-							onChange={handleChange('verificacaosenha')}
-							helperText={errors.verificacaosenha?.message}
-							autoComplete="current-password"
-							sx={{ borderRadius: 1 }}
-						/>
-						<Button
-							variant="contained"
-							fullWidth
-							size="large"
-							onClick={handleSubmit(submitForm)}
-							sx={{
-								mt: 3,
-								mb: 2,
-								borderRadius: 2,
-								color: '#fff',
-								fontSize: 16,
-							}}
-						>
-							Atualizar
-						</Button>
-					</FlexWrap>
-
-					<TextDev>
-						<p>
-							Desenvolvido por Imago Dev | © Associação Brasileira de
-							Ontopsicologia
-						</p>
-					</TextDev>
-				</Card>
-			</MainPage>
-			{ <ErrorModal
-				open={errorModalOpen}
-				onClose={handleCloseErrorModal}
-				messageError={errorModalOpenMesage}
-			/> }
-		</>
-	);
-}
-
- export const getServerSideProps: GetServerSideProps = async ({ query }) => {
- 	return {
- 		props: {
-			token :query.token
-		},
- 	};
- };
+  return {
+    props: {
+      token,
+    },
+  };
+};

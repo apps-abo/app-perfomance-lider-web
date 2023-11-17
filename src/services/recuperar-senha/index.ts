@@ -8,5 +8,5 @@ export const novaSenha = (data: INovaSenha,token : string) => {
 }
 
 export const validarToken = (token: string) => {
-	return api.get(`${url}/validate-token`, { params: token });
+	return api.get(`${url}/validate-token?token=${token}`);
 }
