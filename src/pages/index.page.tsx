@@ -1,17 +1,21 @@
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import Image from "next/image";
 
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 
-import * as yup from "yup";
-
-import { yupResolver } from "@hookform/resolvers/yup";
 import { validarToken } from "@/services/recuperar-senha";
 
-import { DivLinkValid, DivTextLogin, TextDev } from "./styles";
+import {
+  DivLinkValid,
+  DivTextLogin,
+  TextDev,
+  MainPage,
+  FlexWrap,
+  Card,
+} from "./styles";
 import TrocaImagensAutomatica from "@/components/SliderImage";
+import Seo from "@/components/Seo";
 
 interface ITokenProps {
   token: string;
@@ -28,7 +32,6 @@ export default function NovaSenha({ token }: ITokenProps) {
       setLoading(true);
       if (token) {
         const response = await validarToken(token);
-        console.log(response);
         if (response.status === 200) {
           setChecked(true);
           router.push("/recuperar-senha");
@@ -36,19 +39,36 @@ export default function NovaSenha({ token }: ITokenProps) {
         if (response.status === 400) {
           return (
             <>
-              <TrocaImagensAutomatica />
-              <DivLinkValid>
-                <Image
-                  src="/images/logo-abo.png"
-                  alt="Descrição da imagem"
-                  width={75.8}
-                  height={70}
+              {
+                <Seo
+                  title="Redefinição de Senha"
+                  description="Pagina para realizar redefinição de senha  do aplicativo Líder da Associação Brasileira de Ontopsicologia"
                 />
-                <DivTextLogin>
-                  <h1>Link de Recuperação de Senha Inválido</h1>
-                  <p>Gere um novo link por favor!</p>
-                </DivTextLogin>
-              </DivLinkValid>
+              }
+              <MainPage>
+                <TrocaImagensAutomatica />
+                <Card>
+                  <FlexWrap>
+                    <Image
+                      src="/images/Favico-AppLider2023.png"
+                      alt="Descrição da imagem"
+                      width={85}
+                      height={80}
+                      style={{ borderRadius: "10px" }}
+                    />
+                    <DivLinkValid>
+                      <h1>Link de Recuperação de Senha Inválido</h1>
+                      <p>Gere um novo link por favor!</p>
+                    </DivLinkValid>
+                  </FlexWrap>
+                  <TextDev>
+                    <p>
+                      Desenvolvido por Imago Dev | © Associação Brasileira de
+                      Ontopsicologia
+                    </p>
+                  </TextDev>
+                </Card>
+              </MainPage>
             </>
           );
         } else {
@@ -66,49 +86,73 @@ export default function NovaSenha({ token }: ITokenProps) {
   }, [token]);
   if (loading) {
     return (
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <TrocaImagensAutomatica />
-        <DivLinkValid>
-          <Image
-            src="/images/Favico-AppLider2023.png"
-            alt="Descrição da imagem"
-            width={85}
-            height={80}
-			style={{ borderRadius: '10px' }}
+      <>
+        {
+          <Seo
+            title="Redefinição de Senha"
+            description="Pagina para realizar redefinição de senha  do aplicativo Líder da Associação Brasileira de Ontopsicologia"
           />
-          <h1>Carregando</h1>
-          <TextDev>
-            <p>
-              Desenvolvido por Imago Dev | © Associação Brasileira de
-              Ontopsicologia
-            </p>
-          </TextDev>
-        </DivLinkValid>
-      </div>
+        }
+        <MainPage>
+          <TrocaImagensAutomatica />
+          <Card>
+            <FlexWrap>
+              <Image
+                src="/images/Favico-AppLider2023.png"
+                alt="Descrição da imagem"
+                width={85}
+                height={80}
+                style={{ borderRadius: "10px" }}
+              />
+              <DivLinkValid>
+                <h1>Validando Link!</h1>
+              </DivLinkValid>
+            </FlexWrap>
+            <TextDev>
+              <p>
+                Desenvolvido por Imago Dev | © Associação Brasileira de
+                Ontopsicologia
+              </p>
+            </TextDev>
+          </Card>
+        </MainPage>
+      </>
     );
   }
   if (!checked) {
     return (
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <TrocaImagensAutomatica />
-        <DivLinkValid>
-          <Image
-            src="/images/Favico-AppLider2023.png"
-            alt="Descrição da imagem"
-            width={85}
-            height={80}
-			style={{ borderRadius: '10px' }}
+      <>
+        {
+          <Seo
+            title="Redefinição de Senha"
+            description="Pagina para realizar redefinição de senha  do aplicativo Líder da Associação Brasileira de Ontopsicologia"
           />
-          <h1>Link de Recuperação de Senha Inválido</h1>
-          <p>Gere um novo link por favor!</p>
-          <TextDev>
-            <p>
-              Desenvolvido por Imago Dev | © Associação Brasileira de
-              Ontopsicologia
-            </p>
-          </TextDev>
-        </DivLinkValid>
-      </div>
+        }
+        <MainPage>
+          <TrocaImagensAutomatica />
+          <Card>
+            <FlexWrap>
+              <Image
+                src="/images/Favico-AppLider2023.png"
+                alt="Descrição da imagem"
+                width={85}
+                height={80}
+                style={{ borderRadius: "10px" }}
+              />
+              <DivLinkValid>
+                <h1>Link de Recuperação de Senha Inválido</h1>
+                <p>Gere um novo link por favor!</p>
+              </DivLinkValid>
+            </FlexWrap>
+            <TextDev>
+              <p>
+                Desenvolvido por Imago Dev | © Associação Brasileira de
+                Ontopsicologia
+              </p>
+            </TextDev>
+          </Card>
+        </MainPage>
+      </>
     );
   }
 }

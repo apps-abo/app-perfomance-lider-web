@@ -102,19 +102,13 @@ export const DivLinkValid = styled.div`
     font-weight: 700;
     font-size: 22px;
     color: red;
-    @media (max-width: 450px) {
-      font-size: 1rem;
-      text-align: center;
-      width: 90%;
-    }
   }
   p {
     font-family: "Roboto";
     font-size: 18px;
     text-align: center;
-    @media (max-width: 450px) {
-      font-size: 1rem;
-      width: 90%;
-    }
+  }
+  @media (max-width: 768px) {
+    margin: 2.5% 0;
   }
 `;

@@ -1,30 +1,29 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-import { FormControlLabel, Switch } from "@mui/material";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
 import * as yup from "yup";
 
 import { yupResolver } from "@hookform/resolvers/yup";
-import ErrorModal from "@/components/Modals/ModalError";
 import Seo from "@/components/Seo";
 
 import { Card, DivTextLogin, FlexWrap, MainPage, TextDev } from "../styles";
 import TrocaImagensAutomatica from "@/components/SliderImage";
+import { novaSenha } from "@/services/recuperar-senha";
 
 interface IForm {
   senha: string;
   verificacaosenha: string;
 }
 
-interface IResponde {
-  error: string;
+interface ITokenProps {
+  token: string;
 }
 
 const validationSchema = yup.object({
@@ -35,26 +34,9 @@ const validationSchema = yup.object({
     .required("Campo obrigatório"),
 });
 
-export default function NovaSenha() {
-  const [checked, setChecked] = useState<boolean>(false);
-  const [errorModalOpen, setErrorModalOpen] = useState(false);
-  const [errorModalOpenMesage, setErrorModalOpenMesage] = useState<
-    IResponde | undefined
-  >();
-
-  const handleShowErrorModal = (result: IResponde | undefined) => {
-    setErrorModalOpen(true);
-    setErrorModalOpenMesage(result);
-  };
-
-  const handleCloseErrorModal = () => {
-    setErrorModalOpen(false);
-  };
-
-  const handleChangeCheck = (event: ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
-  };
+export default function AlterarSenha({ token }: ITokenProps) {
   const router = useRouter();
+
   const {
     handleSubmit,
     formState: { errors },
@@ -64,11 +46,22 @@ export default function NovaSenha() {
     resolver: yupResolver(validationSchema),
   });
 
-  const callbackUrl = decodeURI((router.query?.callbackUrl as string) ?? "/");
+  const submitForm = useCallback(async (data: IForm) => {
+    try {
+      const response = await novaSenha(data, token);
 
-  const submitForm = async (data: IForm) => {
-    router.push(callbackUrl);
-  };
+      if (response.status === 200) {
+        router.push("/recuperar-senha/sucesso");
+      }
+      if (response.status === 400) {
+          router.push("/recuperar-senha/erro");
+      }
+    } catch (error) {
+      if (error.response.status === 400) {
+        router.push("/recuperar-senha/erro");
+      }
+    }
+  }, []);
 
   const handleChange =
     (name: "senha" | "verificacaosenha") =>
@@ -89,10 +82,11 @@ export default function NovaSenha() {
         <Card>
           <FlexWrap>
             <Image
-              src="/images/logo-abo.png"
+              src="/images/Favico-AppLider2023.png"
               alt="Descrição da imagem"
-              width={75.8}
-              height={70}
+              width={85}
+              height={80}
+              style={{ borderRadius: "10px" }}
             />
             <DivTextLogin>
               <h1>Recuperar Senha</h1>
@@ -149,31 +143,18 @@ export default function NovaSenha() {
           </TextDev>
         </Card>
       </MainPage>
-      {
-        <ErrorModal
-          open={errorModalOpen}
-          onClose={handleCloseErrorModal}
-          messageError={errorModalOpenMesage}
-        />
-      }
     </>
   );
 }
 
-// export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+export const getServerSideProps: GetServerSideProps<ITokenProps> = async ({
+  query,
+}) => {
+  const token = query.token ? String(query.token) : "";
 
-// 	const session = await getSession({ req });
-
-// 	if (session) {
-// 		return {
-// 			redirect: {
-// 				permanent: false,
-// 				destination: '/',
-// 			},
-// 		};
-// 	}
-
-// 	return {
-// 		props: {},
-// 	};
-// };
+  return {
+    props: {
+      token,
+    },
+  };
+};
