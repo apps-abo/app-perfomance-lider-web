@@ -1,9 +1,8 @@
 import Image from "next/image";
 import Seo from "@/components/Seo";
 import TrocaImagensAutomatica from "@/components/SliderImage";
-import { Card } from "@mui/material";
-import { DivLinkValid, FlexWrap, MainPage, TextDev } from "./styles";
 import { useRouter } from "next/router";
+import { Bloco, Flex, Page, Text, DivLink } from "./styles";
 
 export default function ErrorPage() {
   const router = useRouter();
@@ -12,12 +11,13 @@ export default function ErrorPage() {
     <>
       <Seo
         title="Redefinição de Senha"
-        description="Pagina para realizar redefinição de senha do aplicativo Líder da Associação Brasileira de Ontopsicologia"
+        description="Pagina para realizar redefinição de senha  do aplicativo Líder da Associação Brasileira de Ontopsicologia"
       />
-      <MainPage>
+
+      <Page>
         <TrocaImagensAutomatica />
-        <Card>
-          <FlexWrap>
+        <Bloco>
+          <Flex>
             <Image
               src="/images/Favico-AppLider2023.png"
               alt="Descrição da imagem"
@@ -25,19 +25,20 @@ export default function ErrorPage() {
               height={80}
               style={{ borderRadius: "10px" }}
             />
-            <DivLinkValid>
+            <DivLink>
               <h1>Link de Recuperação de Senha Inválido</h1>
               <p>Gere um novo link por favor!</p>
-            </DivLinkValid>
-          </FlexWrap>
-          <TextDev>
+              <p>Mais informações entre em contato via <a href ="https://api.whatsapp.com/send?phone=555599136380&text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20o%20suporte%20do%20aplicativo%20L%C3%ADder.">WhatsApp.</a></p>
+            </DivLink>
+          </Flex>
+          <Text>
             <p>
-              Desenvolvido por Imago Dev | © Associação Brasileira de Ontopsicologia
+              Desenvolvido por Imago Dev | © Associação Brasileira de
+              Ontopsicologia
             </p>
-          </TextDev>
-        </Card>
-      </MainPage>
+          </Text>
+        </Bloco>
+      </Page>
     </>
   );
 }
-

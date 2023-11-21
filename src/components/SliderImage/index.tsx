@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import styles from "./TrocaImagensAutomatica.module.css";
+import { TrocaImagensContainer, TrocaImagensInner, TrocaImagensItem } from "./styles";
+;
 
 const TrocaImagensAutomatica: React.FC = () => {
-  const imagens = ['/images/Screenshot_302.png','/images/Screenshot_301.png','/images/GiorgioArmani2.jpg','/images/R (1).png'];
+  const imagens = [
+    "/images/Screenshot_302.png",
+    "/images/Screenshot_301.png",
+    "/images/GiorgioArmani2.jpg",
+    "/images/R (1).png",
+  ];
   const [indiceImagem, setIndiceImagem] = useState(0);
 
   useEffect(() => {
@@ -19,26 +25,26 @@ const TrocaImagensAutomatica: React.FC = () => {
   }, []);
 
   return (
-    <div className={styles.carouselContainer}>
-      <div className={styles.carouselInner}>
+    <TrocaImagensContainer>
+      <TrocaImagensInner>
         {imagens.map((imagem, index) => (
-          <div
+          <TrocaImagensItem
             key={index}
-            className={`${styles.carouselItem} ${
-              index === indiceImagem ? styles.visible : styles.hidden
-            }`}
+            className={index === indiceImagem ? "visible" : "hidden"}
           >
             <Image
               src={imagem}
               alt={`Imagem ${index + 1}`}
-              layout="fill" 
+              layout="fill"
               objectFit="cover"
             />
-          </div>
+          </TrocaImagensItem>
         ))}
-      </div>
-    </div>
+      </TrocaImagensInner>
+    </TrocaImagensContainer>
   );
 };
 
 export default TrocaImagensAutomatica;
+
+

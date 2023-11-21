@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const MainPage = styled.div`
+export const Page = styled.div`
   background-attachment: fixed;
   background-color: #e5e5e5;
   width: 100%;
@@ -16,7 +16,7 @@ export const MainPage = styled.div`
   }
 `;
 
-export const Card = styled.div`
+export const Bloco = styled.div`
   width: 39%;
   height: 80vh;
   padding: 2.5%;
@@ -32,7 +32,7 @@ export const Card = styled.div`
   }
 `;
 
-export const DivLogoImage = styled.div`
+export const DivLogo = styled.div`
   width: 20vw;
   height: 20vh;
   
@@ -41,7 +41,7 @@ export const DivLogoImage = styled.div`
     max-width: 100px;
   }
 `;
-export const DivTextLogin = styled.div`
+export const DivText = styled.div`
   margin: 5% 0;
   display: flex;
   align-items: center;
@@ -66,7 +66,7 @@ export const DivTextLogin = styled.div`
   }
 `;
 
-export const FlexWrap = styled.div`
+export const Flex = styled.div`
   flex: 2;
   display: flex;
   align-items: center;
@@ -77,18 +77,21 @@ export const FlexWrap = styled.div`
     width: 90%;
   }
 `;
-export const TextDev = styled.div`
+export const Text = styled.div`
   p {
     font-family: "Roboto";
     font-size: 12px;
     opacity: 0.7;
+    @media (max-width: 450px) {
+      font-size: 10px
+    }
   }
   display: flex;
   align-items: flex-end;
   justify-content: center;
 `;
 
-export const DivLinkValid = styled.div`
+export const DivLink = styled.div`
   margin: 5% 0;
   display: flex;
   align-items: center;

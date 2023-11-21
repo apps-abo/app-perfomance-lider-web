@@ -82,6 +82,9 @@ export const TextDev = styled.div`
     font-family: "Roboto";
     font-size: 12px;
     opacity: 0.7;
+    @media (max-width: 450px) {
+      font-size: 10px
+    }
   }
   display: flex;
   align-items: flex-end;

@@ -1,8 +1,7 @@
 import Image from "next/image";
 import Seo from "@/components/Seo";
 import TrocaImagensAutomatica from "@/components/SliderImage";
-import { DivLinkValid, FlexWrap, MainPage, TextDev } from "./styles";
-import { Card } from "@mui/material";
+import { Bloco, DivLink, Page, Flex, Text} from "./styles";
 import { useRouter } from "next/router";
 
 export default function SuccessPage() {
@@ -16,10 +15,10 @@ export default function SuccessPage() {
           description="Pagina para realizar redefinição de senha  do aplicativo Líder da Associação Brasileira de Ontopsicologia"
         />
       }
-      <MainPage>
+      <Page>
         <TrocaImagensAutomatica />
-        <Card>
-          <FlexWrap>
+        <Bloco>
+          <Flex>
             <Image
               src="/images/Favico-AppLider2023.png"
               alt="Descrição da imagem"
@@ -27,18 +26,19 @@ export default function SuccessPage() {
               height={80}
               style={{ borderRadius: "10px" }}
             />
-            <DivLinkValid>
-              <h1>Senha atualizada com Sucesso</h1>
-            </DivLinkValid>
-          </FlexWrap>
-          <TextDev>
+            <DivLink>
+              <h1>Sua senha foi redefinida com sucesso!</h1>
+              <p>Mais informações entre em contato via <a href ="https://api.whatsapp.com/send?phone=555599136380&text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20o%20suporte%20do%20aplicativo%20L%C3%ADder.">WhatsApp.</a></p>
+            </DivLink>
+          </Flex>
+          <Text>
             <p>
               Desenvolvido por Imago Dev | © Associação Brasileira de
               Ontopsicologia
             </p>
-          </TextDev>
-        </Card>
-      </MainPage>
+          </Text>
+        </Bloco>
+      </Page>
     </>
   );
 }

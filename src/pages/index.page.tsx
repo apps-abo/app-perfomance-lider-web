@@ -59,6 +59,7 @@ export default function NovaSenha({ token }: ITokenProps) {
                     <DivLinkValid>
                       <h1>Link de Recuperação de Senha Inválido</h1>
                       <p>Gere um novo link por favor!</p>
+                      <p>Mais informações entre em contato via <a href ="https://api.whatsapp.com/send?phone=555599136380&text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20o%20suporte%20do%20aplicativo%20L%C3%ADder.">WhatsApp.</a></p>
                     </DivLinkValid>
                   </FlexWrap>
                   <TextDev>
@@ -142,6 +143,7 @@ export default function NovaSenha({ token }: ITokenProps) {
               <DivLinkValid>
                 <h1>Link de Recuperação de Senha Inválido</h1>
                 <p>Gere um novo link por favor!</p>
+                <p>Mais informações entre em contato via <a href ="https://api.whatsapp.com/send?phone=555599136380&text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20o%20suporte%20do%20aplicativo%20L%C3%ADder.">WhatsApp.</a></p>
               </DivLinkValid>
             </FlexWrap>
             <TextDev>

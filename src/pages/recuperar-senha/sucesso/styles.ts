@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const MainPage = styled.div`
+export const Page = styled.div`
   background-attachment: fixed;
   background-color: #e5e5e5;
   width: 100%;
@@ -16,7 +16,7 @@ export const MainPage = styled.div`
   }
 `;
 
-export const Card = styled.div`
+export const Bloco = styled.div`
   width: 39%;
   height: 80vh;
   padding: 2.5%;
@@ -29,10 +29,11 @@ export const Card = styled.div`
   @media (max-width: 768px) {
     width: 90%;
     padding: 5%;
+
   }
 `;
 
-export const DivLogoImage = styled.div`
+export const DivImage = styled.div`
   width: 20vw;
   height: 20vh;
   
@@ -41,7 +42,7 @@ export const DivLogoImage = styled.div`
     max-width: 100px;
   }
 `;
-export const DivTextLogin = styled.div`
+export const DivText = styled.div`
   margin: 5% 0;
   display: flex;
   align-items: center;
@@ -66,7 +67,7 @@ export const DivTextLogin = styled.div`
   }
 `;
 
-export const FlexWrap = styled.div`
+export const Flex = styled.div`
   flex: 2;
   display: flex;
   align-items: center;
@@ -74,21 +75,24 @@ export const FlexWrap = styled.div`
   flex-direction: column;
   width: 80%;
   @media (max-width: 768px) {
-    width: 90%;
+    width: 80%;
   }
 `;
-export const TextDev = styled.div`
+export const Text = styled.div`
   p {
     font-family: "Roboto";
     font-size: 12px;
     opacity: 0.7;
+    @media (max-width: 450px) {
+      font-size: 10px
+    }
   }
   display: flex;
   align-items: flex-end;
   justify-content: center;
 `;
 
-export const DivLinkValid = styled.div`
+export const DivLink = styled.div`
   margin: 5% 0;
   display: flex;
   align-items: center;
@@ -101,14 +105,20 @@ export const DivLinkValid = styled.div`
     font-family: "Roboto";
     font-weight: 700;
     font-size: 22px;
-    color: red;
+    color: green;
+    @media (max-width: 450px) {
+      font-size: 1rem;
+      text-align: center;
+      width: 90%;
+    }
   }
   p {
     font-family: "Roboto";
     font-size: 18px;
     text-align: center;
-  }
-  @media (max-width: 768px) {
-    margin: 2.5% 0;
+    @media (max-width: 450px) {
+      font-size: 1rem;
+      width: 90%;
+    }
   }
 `;
