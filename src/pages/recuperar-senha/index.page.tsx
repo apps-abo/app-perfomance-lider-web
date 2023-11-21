@@ -60,8 +60,8 @@ export default function AlterarSenha({ token }: ITokenProps) {
       if (response.status === 400) {
         router.push("/recuperar-senha/erro");
       }
-    } catch (error) {
-      if (error.response.status === 400) {
+    } catch (error:any) {
+      if (error?.response?.status === 400) {
         router.push("/recuperar-senha/erro");
       }
     }
