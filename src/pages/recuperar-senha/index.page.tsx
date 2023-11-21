@@ -65,7 +65,7 @@ export default function AlterarSenha({ token }: ITokenProps) {
         router.push("/recuperar-senha/erro");
       }
     }
-  }, []);
+  }, [router, token]);
 
   const handleChange =
     (name: "senha" | "verificacaosenha") =>

@@ -81,10 +81,12 @@ export default function NovaSenha({ token }: ITokenProps) {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [router, token]);
+
   useEffect(() => {
     validatorTokenfunction();
-  }, [token]);
+  }, [token, validatorTokenfunction]);
+
   if (loading) {
     return (
       <>

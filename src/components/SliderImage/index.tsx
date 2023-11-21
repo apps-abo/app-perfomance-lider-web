@@ -22,7 +22,7 @@ const TrocaImagensAutomatica: React.FC = () => {
       // Limpar o intervalo quando o componente é desmontado
       clearInterval(intervalId);
     };
-  }, []);
+  }, [imagens.length]);
 
   return (
     <TrocaImagensContainer>
