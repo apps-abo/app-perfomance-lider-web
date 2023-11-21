@@ -27,11 +27,15 @@ interface ITokenProps {
 }
 
 const validationSchema = yup.object({
-  senha: yup.string().required("Campo obrigatório"),
+  senha: yup
+    .string()
+    .required("Campo obrigatório")
+    .min(7, "A senha deve ter pelo menos 7 caracteres"),
   verificacaosenha: yup
     .string()
     .oneOf([yup.ref("senha")], "As senhas devem coincidir")
-    .required("Campo obrigatório"),
+    .required("Campo obrigatório")
+    .min(7, "A senha deve ter pelo menos 7 caracteres"),
 });
 
 export default function AlterarSenha({ token }: ITokenProps) {
@@ -54,7 +58,7 @@ export default function AlterarSenha({ token }: ITokenProps) {
         router.push("/recuperar-senha/sucesso");
       }
       if (response.status === 400) {
-          router.push("/recuperar-senha/erro");
+        router.push("/recuperar-senha/erro");
       }
     } catch (error) {
       if (error.response.status === 400) {
