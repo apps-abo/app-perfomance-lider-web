@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 export const TrocaImagensContainer = styled.div`
   position: relative;
   width: 50vw;
-  height: 80vh;
+  height: 90vh;
   overflow: hidden;
   align-items: flex-start;
   background-size: cover;
