@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 
 import { Main, Text, Button, Image, ImagemFund, ImageLider } from "./style";
-import { useRouter } from "next/router";
+import { GetServerSideProps } from "next";
 
-const NavegarParaEntrevistados = () => {
-    const {query} = useRouter();
-      const [message, setMessage] = useState(
+interface NavegarParaMateriasProps {
+  slug: string
+}
+
+const NavegarParaMaterias: FC<NavegarParaMateriasProps> = ({slug}) => {
+  const [message, setMessage] = useState(
     "Você está sendo direcionado para o APP Ontopsicologia!"
   );
 
@@ -15,15 +18,16 @@ const NavegarParaEntrevistados = () => {
 
 
   const click = () => {
+    console.log(slug)
     const userAgent = navigator.userAgent || navigator.vendor;
     if (/android/i.test(userAgent)) {
-      window.location.href = `intent:#Intent;scheme=br.com.performancelider.applider://materias?slug=${query.slug};package=br.com.performancelider.applider;end`;
+      window.location.href = `intent:#Intent;scheme=br.com.performancelider.applider://materias?slug=${slug};package=br.com.performancelider.applider;end`;
       return;
     }
     var algo = window as any;
     if (/iPad|iPhone|iPod/.test(userAgent) && !algo.MSStream) {
       // alert(`app-ontopsicologia://${configRoute()}`)
-      window.location.href = `mobile-app-lider://materias?slug=${query.slug}`;
+      window.location.href = `mobile-app-lider://materias?slug=${slug}`;
       return;
     }
     setMessage("Você precisa estar em um dispositivo móvel para ter acesso!");
@@ -52,4 +56,13 @@ const NavegarParaEntrevistados = () => {
   );
 };
 
-export default NavegarParaEntrevistados;
+export default NavegarParaMaterias;
+
+export const getServerSideProps: GetServerSideProps = async ({  query }) => {
+
+	return {
+		props: {
+			slug: query.slug
+		},
+	};
+};
