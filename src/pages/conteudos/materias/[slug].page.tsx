@@ -21,7 +21,8 @@ const NavegarParaMaterias: FC<NavegarParaMateriasProps> = ({slug}) => {
     console.log(slug)
     const userAgent = navigator.userAgent || navigator.vendor;
     if (/android/i.test(userAgent)) {
-      window.location.href = `intent:#Intent;scheme=br.com.performancelider.applider://materias?slug=${slug};package=br.com.performancelider.applider;end`;
+      window.location.href = `intent:#Intent;scheme=mobile-app-lider://materias?slug=${slug};package=br.com.performancelider.applider;end`;
+
       return;
     }
     var algo = window as any;
