@@ -5,10 +5,7 @@ import { TrocaImagensContainer, TrocaImagensInner, TrocaImagensItem } from "./st
 
 const TrocaImagensAutomatica: React.FC = () => {
   const imagens = [
-    "/images/Screenshot_302.png",
-    "/images/Screenshot_301.png",
-    "/images/GiorgioArmani2.jpg",
-    "/images/R (1).png",
+    "/images/banner.jpg"
   ];
   const [indiceImagem, setIndiceImagem] = useState(0);
 
