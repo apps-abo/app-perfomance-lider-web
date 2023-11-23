@@ -3,6 +3,7 @@ import React, { FC, useEffect, useState } from "react";
 import { Main, Text, Button, Image, ImagemFund, ImageLider } from "./style";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
+import { buscarInformacoes } from "@/services/entrevistados";
 
 interface NavegarParaEntrevistadosProps {
   slug: string
@@ -60,7 +61,8 @@ const NavegarParaEntrevistados: FC<NavegarParaEntrevistadosProps> = ({slug}) => 
 export default NavegarParaEntrevistados;
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-
+  const {data} = await buscarInformacoes(query.slug as string)
+  console.log(data)
 	return {
 		props: {
 			slug: query.slug

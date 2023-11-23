@@ -39,9 +39,12 @@ const NavegarParaPlanos= () => {
         <title>Planos - App Performance Líder</title>
         <meta
           name="description"
-          content="Seleção de plano do App Perfomance Líder"
+          content="Seleção de plano do App Perfomance Líder."
         />
        <meta property="og:image" content="/images/Favico-AppLider2023.png" />
+       <meta property="og:title" content="App Performance Líder"/>
+       <meta property="og:description" 
+          content="Seleção de plano do App Perfomance Líder." />
       </Head>
       <div>
         <Main>
