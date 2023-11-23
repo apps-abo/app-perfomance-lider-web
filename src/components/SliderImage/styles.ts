@@ -12,7 +12,6 @@ export const TrocaImagensContainer = styled.div`
   margin: 0;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   flex-direction: column;
-
   @media (max-width: 768px) {
     width: 50%;
     height: 50vh;
