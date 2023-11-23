@@ -34,7 +34,7 @@ export default function NovaSenha({ token }: ITokenProps) {
         const response = await validarToken(token);
         if (response.status === 200) {
           setChecked(true);
-          router.push(`/recuperar-senha?token=${token}`);
+          router.push(`/recuperar-senha/alterar-senha?token=${token}`);
         }
         if (response.status === 400) {
           return (
