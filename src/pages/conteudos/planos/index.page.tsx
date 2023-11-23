@@ -8,7 +8,7 @@ import Head from "next/head";
 
 const NavegarParaPlanos= () => {
   const [message, setMessage] = useState(
-    "Você está sendo direcionado para o APP Ontopsicologia!"
+    "Você está sendo direcionado para o App Performance Líder!"
   );
 
   useEffect(() => {
@@ -39,9 +39,12 @@ const NavegarParaPlanos= () => {
         <title>Planos - App Performance Líder</title>
         <meta
           name="description"
-          content="Seleção de plano do App Perfomance Líder"
+          content="Seleção de plano do App Perfomance Líder."
         />
        <meta property="og:image" content="/images/Favico-AppLider2023.png" />
+       <meta property="og:title" content="App Performance Líder"/>
+       <meta property="og:description" 
+          content="Seleção de plano do App Perfomance Líder." />
       </Head>
       <div>
         <Main>
@@ -54,7 +57,7 @@ const NavegarParaPlanos= () => {
           {/* <ImagemFund src={logo} /> */}
           {/* <Text>{message}</Text> */}
           {message ===
-          "Você está sendo direcionado para o APP Ontopsicologia!" ? (
+          "Você está sendo direcionado para o App Performance Líder!" ? (
             <Button onClick={click}>Acessar conteúdo</Button>
           ) : (
             <div />

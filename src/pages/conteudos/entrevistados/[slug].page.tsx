@@ -3,14 +3,21 @@ import React, { FC, useEffect, useState } from "react";
 import { Main, Text, Button, Image, ImagemFund, ImageLider } from "./style";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
+import { buscarInformacoes } from "@/services/entrevistados";
+import Head from "next/head";
 
 interface NavegarParaEntrevistadosProps {
-  slug: string
+  slug: string,
+  entrevistado: {
+    titulo: string,
+    banner: string,
+    categorias: string[],
+  }
 }
 
-const NavegarParaEntrevistados: FC<NavegarParaEntrevistadosProps> = ({slug}) => {
+const NavegarParaEntrevistados: FC<NavegarParaEntrevistadosProps> = ({slug, entrevistado}) => {
   const [message, setMessage] = useState(
-    "Você está sendo direcionado para o APP Ontopsicologia!"
+    "Você está sendo direcionado para o App Performance Líder!"
   );
 
   useEffect(() => {
@@ -36,6 +43,18 @@ const NavegarParaEntrevistados: FC<NavegarParaEntrevistadosProps> = ({slug}) => 
   };
   
   return (
+   <>
+    <Head>
+        <title>App Performance Líder - {entrevistado.titulo} ({entrevistado.categorias.join(", ")}) </title>
+        <meta
+          name="description"
+          content="Acesse o link direto ao conteúdo!"
+        />
+       <meta property="og:image" content={entrevistado.banner} />
+       <meta property="og:title" content={`App Performance Líder - ${entrevistado.titulo} (${entrevistado.categorias.join(", ")})`}/>
+       <meta property="og:description" 
+          content="Acesse o link direto ao conteúdo!" />
+    </Head>
     <div>
       <Main>
         <Image>
@@ -47,23 +66,25 @@ const NavegarParaEntrevistados: FC<NavegarParaEntrevistadosProps> = ({slug}) => 
         {/* <ImagemFund src={logo} /> */}
         {/* <Text>{message}</Text> */}
         {message ===
-        "Você está sendo direcionado para o APP Ontopsicologia!" ? (
+        "Você está sendo direcionado para o App Performance Líder!" ? (
           <Button onClick={click}>Acessar conteúdo</Button>
         ) : (
           <div />
         )}
       </Main>
     </div>
+   </>
   );
 };
 
 export default NavegarParaEntrevistados;
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-
+  const {data} = await buscarInformacoes(query.slug as string)
 	return {
 		props: {
-			slug: query.slug
+			slug: query.slug,
+      entrevistado: data
 		},
 	};
 };

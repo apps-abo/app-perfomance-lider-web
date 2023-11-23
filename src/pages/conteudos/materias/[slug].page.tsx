@@ -2,14 +2,21 @@ import React, { FC, useEffect, useState } from "react";
 
 import { Main, Text, Button, Image, ImagemFund, ImageLider } from "./style";
 import { GetServerSideProps } from "next";
+import Head from "next/head";
+import { buscarInformacoes } from "@/services/materias";
 
 interface NavegarParaMateriasProps {
-  slug: string
+  slug: string,
+  materia: {
+    titulo: string,
+    banner: string,
+    categorias: string[],
+  }
 }
 
-const NavegarParaMaterias: FC<NavegarParaMateriasProps> = ({slug}) => {
+const NavegarParaMaterias: FC<NavegarParaMateriasProps> = ({slug, materia}) => {
   const [message, setMessage] = useState(
-    "Você está sendo direcionado para o APP Ontopsicologia!"
+    "Você está sendo direcionado para o App Performance Líder!"
   );
 
   useEffect(() => {
@@ -36,6 +43,18 @@ const NavegarParaMaterias: FC<NavegarParaMateriasProps> = ({slug}) => {
   };
   
   return (
+    <>
+    <Head>
+        <title>App Performance Líder - {materia.titulo} ({materia.categorias.join(", ")}) </title>
+        <meta
+          name="description"
+          content="Acesse o link direto ao conteúdo!"
+        />
+       <meta property="og:image" content={materia.banner} />
+       <meta property="og:title" content={`App Performance Líder - ${materia.titulo} (${materia.categorias.join(", ")})`}/>
+       <meta property="og:description" 
+          content="Acesse o link direto ao conteúdo!" />
+    </Head>
     <div>
       <Main>
         <Image>
@@ -47,23 +66,26 @@ const NavegarParaMaterias: FC<NavegarParaMateriasProps> = ({slug}) => {
         {/* <ImagemFund src={logo} /> */}
         {/* <Text>{message}</Text> */}
         {message ===
-        "Você está sendo direcionado para o APP Ontopsicologia!" ? (
+        "Você está sendo direcionado para o App Performance Líder!" ? (
           <Button onClick={click}>Acessar conteúdo</Button>
         ) : (
           <div />
         )}
       </Main>
     </div>
+    </>
   );
 };
 
 export default NavegarParaMaterias;
 
 export const getServerSideProps: GetServerSideProps = async ({  query }) => {
-
+  const {data} = await buscarInformacoes(query.slug as string)
+  console.log(data)
 	return {
 		props: {
-			slug: query.slug
+			slug: query.slug,
+      materia: data
 		},
 	};
 };
