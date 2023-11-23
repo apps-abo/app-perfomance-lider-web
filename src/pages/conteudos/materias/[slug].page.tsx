@@ -10,12 +10,13 @@ interface NavegarParaMateriasProps {
   materia: {
     titulo: string,
     banner: string,
+    categorias: string[],
   }
 }
 
 const NavegarParaMaterias: FC<NavegarParaMateriasProps> = ({slug, materia}) => {
   const [message, setMessage] = useState(
-    "Você está sendo direcionado para o APP Ontopsicologia!"
+    "Você está sendo direcionado para o App Performance Líder!"
   );
 
   useEffect(() => {
@@ -44,13 +45,13 @@ const NavegarParaMaterias: FC<NavegarParaMateriasProps> = ({slug, materia}) => {
   return (
     <>
     <Head>
-        <title>App Performance Líder - {materia.titulo} (colocar categoria) </title>
+        <title>App Performance Líder - {materia.titulo} ({materia.categorias.join(", ")}) </title>
         <meta
           name="description"
           content="Acesse o link direto ao conteúdo!"
         />
        <meta property="og:image" content={materia.banner} />
-       <meta property="og:title" content={`App Performance Líder - ${materia.titulo} (colocar categoria)`}/>
+       <meta property="og:title" content={`App Performance Líder - ${materia.titulo} (${materia.categorias.join(", ")})`}/>
        <meta property="og:description" 
           content="Acesse o link direto ao conteúdo!" />
     </Head>
@@ -65,7 +66,7 @@ const NavegarParaMaterias: FC<NavegarParaMateriasProps> = ({slug, materia}) => {
         {/* <ImagemFund src={logo} /> */}
         {/* <Text>{message}</Text> */}
         {message ===
-        "Você está sendo direcionado para o APP Ontopsicologia!" ? (
+        "Você está sendo direcionado para o App Performance Líder!" ? (
           <Button onClick={click}>Acessar conteúdo</Button>
         ) : (
           <div />

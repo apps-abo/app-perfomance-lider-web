@@ -8,7 +8,7 @@ import Head from "next/head";
 
 const NavegarParaPlanos= () => {
   const [message, setMessage] = useState(
-    "Você está sendo direcionado para o APP Ontopsicologia!"
+    "Você está sendo direcionado para o App Performance Líder!"
   );
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const NavegarParaPlanos= () => {
           {/* <ImagemFund src={logo} /> */}
           {/* <Text>{message}</Text> */}
           {message ===
-          "Você está sendo direcionado para o APP Ontopsicologia!" ? (
+          "Você está sendo direcionado para o App Performance Líder!" ? (
             <Button onClick={click}>Acessar conteúdo</Button>
           ) : (
             <div />
