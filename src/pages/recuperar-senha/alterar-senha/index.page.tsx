@@ -16,6 +16,9 @@ import Seo from "@/components/Seo";
 import { Card, DivTextLogin, FlexWrap, MainPage, TextDev } from "../../styles";
 import TrocaImagensAutomatica from "@/components/SliderImage";
 import { novaSenha } from "@/services/recuperar-senha";
+import { IconButton, InputAdornment } from "@mui/material";
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 interface IForm {
   senha: string;
@@ -40,6 +43,19 @@ const validationSchema = yup.object({
 
 export default function AlterarSenha({ token }: ITokenProps) {
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showVPassword, setShowVPassword] = useState<boolean>(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
+  const handleClickShowVPassword = () => setShowVPassword((show) => !show);
+  
+  const handleMouseDownVPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
 
   const {
     handleSubmit,
@@ -50,26 +66,29 @@ export default function AlterarSenha({ token }: ITokenProps) {
     resolver: yupResolver(validationSchema),
   });
 
-  const submitForm = useCallback(async (data: IForm) => {
-    try {
-      const response = await novaSenha(data, token);
+  const submitForm = useCallback(
+    async (data: IForm) => {
+      try {
+        const response = await novaSenha(data, token);
 
-      if (response.status === 200) {
-        router.push("/recuperar-senha/sucesso");
-      }
-      if (response.status === 400) {
+        if (response.status === 200) {
+          router.push("/recuperar-senha/sucesso");
+        }
+        if (response.status === 400) {
+          router.push("/recuperar-senha/erro");
+        }
+        if (response.status === 500) {
+          router.push("/recuperar-senha/erro");
+        }
+      } catch (error: any) {
+        if (error?.response?.status === 400) {
+          router.push("/recuperar-senha/erro");
+        }
         router.push("/recuperar-senha/erro");
       }
-      if (response.status === 500) {
-        router.push("/recuperar-senha/erro");
-      }
-    } catch (error:any) {
-      if (error?.response?.status === 400) {
-        router.push("/recuperar-senha/erro");
-      }
-      router.push("/recuperar-senha/erro");
-    }
-  }, [router, token]);
+    },
+    [router, token]
+  );
 
   const handleChange =
     (name: "senha" | "verificacaosenha") =>
@@ -107,11 +126,25 @@ export default function AlterarSenha({ token }: ITokenProps) {
               id="senha"
               label="Senha"
               name="senha"
-              autoComplete="senha"
+              type={showPassword ? "text" : "password"}
               onChange={handleChange("senha")}
               autoFocus
               helperText={errors.senha?.message}
               sx={{ borderRadius: 1 }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
             <TextField
               margin="normal"
@@ -119,12 +152,26 @@ export default function AlterarSenha({ token }: ITokenProps) {
               fullWidth
               name="vsenha"
               label="Verificacao de Senha"
-              type="vsenha"
+              type={showVPassword ? "text" : "password"}
               id="vsenha"
               onChange={handleChange("verificacaosenha")}
               helperText={errors.verificacaosenha?.message}
               autoComplete="current-password"
               sx={{ borderRadius: 1 }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowVPassword}
+                      onMouseDown={handleMouseDownVPassword}
+                      edge="end"
+                    >
+                      {showVPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
             <Button
               variant="contained"
