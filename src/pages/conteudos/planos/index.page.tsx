@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 
 import { Main, Text, Button, Image, ImagemFund, ImageLider } from "./style";
 import { GetServerSideProps } from "next";
+import Head from "next/head";
 
 
 
@@ -33,24 +34,34 @@ const NavegarParaPlanos= () => {
   };
   
   return (
-    <div>
-      <Main>
-        <Image>
-          <ImageLider
-            src="/images/Favico-AppLider2023.png"
-            alt="Minha Imagem"
-          />
-        </Image>
-        {/* <ImagemFund src={logo} /> */}
-        {/* <Text>{message}</Text> */}
-        {message ===
-        "Você está sendo direcionado para o APP Ontopsicologia!" ? (
-          <Button onClick={click}>Acessar conteúdo</Button>
-        ) : (
-          <div />
-        )}
-      </Main>
-    </div>
+    <>
+      <Head>
+        <title>Planos - App Performance Líder</title>
+        <meta
+          name="description"
+          content="Seleção de plano do App Perfomance Líder"
+        />
+       <meta property="og:image" content="/images/Favico-AppLider2023.png" />
+      </Head>
+      <div>
+        <Main>
+          <Image>
+            <ImageLider
+              src="/images/Favico-AppLider2023.png"
+              alt="Minha Imagem"
+            />
+          </Image>
+          {/* <ImagemFund src={logo} /> */}
+          {/* <Text>{message}</Text> */}
+          {message ===
+          "Você está sendo direcionado para o APP Ontopsicologia!" ? (
+            <Button onClick={click}>Acessar conteúdo</Button>
+          ) : (
+            <div />
+          )}
+        </Main>
+      </div>
+    </>
   );
 };
 
