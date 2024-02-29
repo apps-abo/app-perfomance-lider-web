@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { TrocaImagensContainer, TrocaImagensInner, TrocaImagensItem } from "./styles";
-;
-
+import {
+  TrocaImagensContainer,
+  TrocaImagensInner,
+  TrocaImagensItem,
+} from "./styles";
 const TrocaImagensAutomatica: React.FC = () => {
-  const imagens = [
-    "/images/banner.jpg"
-  ];
+  const imagens = ["/images/banner.jpg"];
   const [indiceImagem, setIndiceImagem] = useState(0);
 
   useEffect(() => {
@@ -32,8 +32,8 @@ const TrocaImagensAutomatica: React.FC = () => {
             <Image
               src={imagem}
               alt={`Imagem ${index + 1}`}
-              layout="fill"
               objectFit="cover"
+              layout="fill"
             />
           </TrocaImagensItem>
         ))}
@@ -43,5 +43,3 @@ const TrocaImagensAutomatica: React.FC = () => {
 };
 
 export default TrocaImagensAutomatica;
-
-
