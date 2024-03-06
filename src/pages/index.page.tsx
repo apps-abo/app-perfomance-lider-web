@@ -1,22 +1,12 @@
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 
-import { validarToken } from "@/services/recuperar-senha";
-
-import {
-  DivLinkValid,
-  DivTextLogin,
-  TextDev,
-  MainPage,
-  FlexWrap,
-  Card,
-} from "./styles";
+import { DivLinkValid, TextDev, MainPage, FlexWrap, Card } from "./styles";
 import TrocaImagensAutomatica from "@/components/SliderImage";
 import Seo from "@/components/Seo";
-import { Button, colors } from "@mui/material";
 
 interface ITokenProps {
   token: string;
@@ -42,7 +32,7 @@ export default function NovaSenha({ token }: ITokenProps) {
               style={{ borderRadius: "10px" }}
             />
             <DivLinkValid>
-              <h1 style={{color : "green"}}>Seja Bem Vindo</h1>
+              <h1 style={{ color: "green" }}>Seja Bem Vindo</h1>
               <p>
                 Aqui você encontra os melhores conteudos relacionados a
                 liderança no Brasil!
