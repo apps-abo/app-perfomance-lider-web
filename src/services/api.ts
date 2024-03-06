@@ -6,7 +6,7 @@ const httpsAgent = new https.Agent({
 });
 
 export const api = axios.create({
-	baseURL: "http://localhost:5137/",
+	baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
 	httpsAgent,
 	headers: {
 		'Content-Type': 'application/json'
