@@ -9,7 +9,6 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
 import * as yup from "yup";
-import { enqueueSnackbar } from "notistack";
 import { Modal } from "antd";
 
 import InputMask from "react-input-mask";
@@ -97,9 +96,9 @@ export default function RegistrarAssinatura({ slug }: ISlugProps) {
         );
 
         if (!cc.valid()) {
-          enqueueSnackbar({
-            message: "Cartão de Crédito Inválido!",
-            variant: "error",
+          Modal.error({
+            title: "Cartão de Crédito Inválido!",
+            content: "Tente outro cartão por favor!",
           });
           return;
         }
@@ -107,10 +106,9 @@ export default function RegistrarAssinatura({ slug }: ISlugProps) {
         const response = await new Promise((resolve, reject) => {
           Iugu.createPaymentToken(cc, (response: any) => {
             if (response.errors) {
-              console.log(response, "Erro ao salvar cartão");
-              enqueueSnackbar({
-                message: "Ocorreu um erro tente com outro cartão",
-                variant: "error",
+              Modal.error({
+                title: "Houve um erro ao processar seu cartão",
+                content: "Tente outro cartão por favor!",
               });
               reject(response.errors);
             } else {
@@ -125,7 +123,12 @@ export default function RegistrarAssinatura({ slug }: ISlugProps) {
           const request = await criarAssinatura(requestData);
           if (request.status == 200) {
             router.push("/assinatura/sucesso");
-          } else if (request.status == 400) {
+          }
+          if (request.status == 400) {
+            router.push("/assinatura/erro")
+          }
+          else if (request.status == 500){
+            router.push("/assinatura/erro")
           }
         }
       } catch (error) {
@@ -152,7 +155,7 @@ export default function RegistrarAssinatura({ slug }: ISlugProps) {
 
     script.onload = () => {
       Iugu.setAccountID("C32AADE7CB0A4EDBBED017FA6171DA42");
-      Iugu.setTestMode(true);
+      Iugu.setTestMode(false);
       Iugu.setup();
     };
 
