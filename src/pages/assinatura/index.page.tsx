@@ -10,6 +10,9 @@ import TextField from "@mui/material/TextField";
 
 import * as yup from "yup";
 import { enqueueSnackbar } from "notistack";
+import { Modal } from "antd";
+
+import InputMask from "react-input-mask";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import Seo from "@/components/Seo";
@@ -121,20 +124,16 @@ export default function RegistrarAssinatura({ slug }: ISlugProps) {
           if (request.status == 200) {
             router.push("/assinatura/sucesso");
           } else if (request.status == 400) {
-            enqueueSnackbar({
-              message: "Ocorreu um erro tente com outro cartão",
-              variant: "error",
-            });
           }
         }
       } catch (error) {
-        enqueueSnackbar({
-          message: "Ocorreu um erro tente com outro cartão",
-          variant: "error",
+        Modal.error({
+          title: "Houve um erro ao processar seu cartão",
+          content: "Tente outro cartão por favor!",
         });
       }
     },
-    [slug, token, router]
+    [token, slug, router]
   );
 
   const handleChange =
@@ -251,7 +250,15 @@ export default function RegistrarAssinatura({ slug }: ISlugProps) {
               helperText={errors.number_credit_card?.message}
               inputProps={{ "data-iugu": "number" }}
               sx={{ borderRadius: 1 }}
+              InputProps={{
+                inputComponent: InputMask as any,
+                inputProps: {
+                  mask: "9999 9999 9999 9999",
+                  maskChar: " ",
+                },
+              }}
             />
+
             <TextField
               margin="normal"
               required
@@ -264,6 +271,13 @@ export default function RegistrarAssinatura({ slug }: ISlugProps) {
               helperText={errors.verification_value?.message}
               inputProps={{ "data-iugu": "verification_value" }}
               sx={{ borderRadius: 1 }}
+              InputProps={{
+                inputComponent: InputMask as any,
+                inputProps: {
+                  mask: "999",
+                  maskChar: " ",
+                },
+              }}
             />
             <TextField
               margin="normal"
@@ -277,6 +291,13 @@ export default function RegistrarAssinatura({ slug }: ISlugProps) {
               helperText={errors.expiration?.message}
               inputProps={{ "data-iugu": "expiration" }}
               sx={{ borderRadius: 1 }}
+              InputProps={{
+                inputComponent: InputMask as any,
+                inputProps: {
+                  mask: "99/99",
+                  maskChar: "",
+                },
+              }}
             />
             <Select
               required
