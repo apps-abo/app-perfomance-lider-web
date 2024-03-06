@@ -15,7 +15,7 @@ import { Modal } from "antd";
 import InputMask from "react-input-mask";
 
 import { yupResolver } from "@hookform/resolvers/yup";
-import Seo from "@/components/Seo";
+import Seo from "@/components/Seo"
 
 import { criarAssinatura } from "@/services/iugu";
 import {
@@ -26,8 +26,10 @@ import {
   FlexWrap,
   PageMain,
 } from "./styles";
-import TrocaImagensAutomatica from "@/components/SliderImage";
+
 import { MenuItem, Select } from "@mui/material";
+import React from "react";
+import TrocaImagensAutomatica from "@/components/SliderImage";
 
 interface IForm {
   first_name: string;
