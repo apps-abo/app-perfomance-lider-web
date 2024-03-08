@@ -14,7 +14,7 @@ import { Modal } from "antd";
 import InputMask from "react-input-mask";
 
 import { yupResolver } from "@hookform/resolvers/yup";
-import Seo from "@/components/Seo"
+import Seo from "@/components/Seo";
 
 import { criarAssinatura } from "@/services/iugu";
 import {
@@ -26,9 +26,9 @@ import {
   PageMain,
 } from "./styles";
 
-import { MenuItem, Select } from "@mui/material";
 import React from "react";
 import TrocaImagensAutomatica from "@/components/SliderImage";
+import { Typography } from "@mui/material";
 
 interface IForm {
   first_name: string;
@@ -54,21 +54,36 @@ const validationSchema = yup.object({
   number_credit_card: yup
     .string()
     .min(16, "Numero do cartão deve ter no minimo 16 caracteres")
-    .required("Campo obrigatório"),
+    .required("Campo obrigatório")
+    .test("is-valid-credit-card", "Número de cartão inválido", (value) => {
+      return Iugu.utils.validateCreditCardNumber(value);
+    }),
   verification_value: yup
     .string()
     .min(3, "Codigo de segurança deve ter no minimo 3 caracteres")
-    .required("Campo obrigatório"),
+    .required("Campo obrigatório")
+    .test(
+      "is-valid-cvv",
+      "Código de segurança inválido",
+      (value, { parent }) => {
+        const brand = Iugu.utils.getBrandByCreditCardNumber(
+          parent.number_credit_card
+        );
+        return brand ? Iugu.utils.validateCVV(value, brand) : false;
+      }
+    ),
   expiration: yup
     .string()
     .min(4, "Data de expiração deve ter no minimo 4 caracteres")
-    .required("Campo obrigatório"),
+    .required("Campo obrigatório")
+    .test("is-valid-expiration", "Data de expiração inválida", (value) => {
+      return Iugu.utils.validateExpirationString(value);
+    }),
 });
 
 export default function RegistrarAssinatura({ slug }: ISlugProps) {
   const router = useRouter();
   const [token, setToken] = useState<string>("");
-  const [parcelas, setParcelas] = useState(1);
 
   const {
     handleSubmit,
@@ -78,10 +93,6 @@ export default function RegistrarAssinatura({ slug }: ISlugProps) {
     mode: "onChange",
     resolver: yupResolver(validationSchema),
   });
-
-  const handleParcelasChange = (e: any) => {
-    setParcelas(parseInt(e.target.value));
-  };
 
   const submitForm = useCallback(
     async (data: IForm) => {
@@ -120,15 +131,15 @@ export default function RegistrarAssinatura({ slug }: ISlugProps) {
 
         if (token) {
           const requestData = { slug, token };
+          console.log(slug);
           const request = await criarAssinatura(requestData);
           if (request.status == 200) {
             router.push("/assinatura/sucesso");
           }
           if (request.status == 400) {
-            router.push("/assinatura/erro")
-          }
-          else if (request.status == 500){
-            router.push("/assinatura/erro")
+            router.push("/assinatura/erro");
+          } else if (request.status == 500) {
+            router.push("/assinatura/erro");
           }
         }
       } catch (error) {
@@ -225,7 +236,13 @@ export default function RegistrarAssinatura({ slug }: ISlugProps) {
               type="text"
               onChange={handleChange("first_name")}
               autoFocus
-              helperText={errors.first_name?.message}
+              helperText={
+                errors.first_name && (
+                  <Typography variant="body2" color="error">
+                    {errors.first_name.message}
+                  </Typography>
+                )
+              }
               inputProps={{ "data-iugu": "first_name" }}
               sx={{ borderRadius: 1 }}
             />
@@ -239,7 +256,13 @@ export default function RegistrarAssinatura({ slug }: ISlugProps) {
               type="text"
               onChange={handleChange("last_name")}
               autoFocus
-              helperText={errors.last_name?.message}
+              helperText={
+                errors.last_name && (
+                  <Typography variant="body2" color="error">
+                    {errors.last_name.message}
+                  </Typography>
+                )
+              }
               inputProps={{ "data-iugu": "last_name" }}
               sx={{ borderRadius: 1 }}
             />
@@ -252,7 +275,13 @@ export default function RegistrarAssinatura({ slug }: ISlugProps) {
               type="text"
               id="number_credit_card"
               onChange={handleChange("number_credit_card")}
-              helperText={errors.number_credit_card?.message}
+              helperText={
+                errors.number_credit_card && (
+                  <Typography variant="body2" color="error">
+                    {errors.number_credit_card.message}
+                  </Typography>
+                )
+              }
               inputProps={{ "data-iugu": "number" }}
               sx={{ borderRadius: 1 }}
               InputProps={{
@@ -273,7 +302,13 @@ export default function RegistrarAssinatura({ slug }: ISlugProps) {
               type="text"
               id="verification_value"
               onChange={handleChange("verification_value")}
-              helperText={errors.verification_value?.message}
+              helperText={
+                errors.verification_value && (
+                  <Typography variant="body2" color="error">
+                    {errors.verification_value.message}
+                  </Typography>
+                )
+              }
               inputProps={{ "data-iugu": "verification_value" }}
               sx={{ borderRadius: 1 }}
               InputProps={{
@@ -293,7 +328,13 @@ export default function RegistrarAssinatura({ slug }: ISlugProps) {
               type="text"
               id="expiration"
               onChange={handleChange("expiration")}
-              helperText={errors.expiration?.message}
+              helperText={
+                errors.expiration && (
+                  <Typography variant="body2" color="error">
+                    {errors.expiration.message}
+                  </Typography>
+                )
+              }
               inputProps={{ "data-iugu": "expiration" }}
               sx={{ borderRadius: 1 }}
               InputProps={{
@@ -304,27 +345,6 @@ export default function RegistrarAssinatura({ slug }: ISlugProps) {
                 },
               }}
             />
-            <Select
-              required
-              value={parcelas}
-              onChange={handleParcelasChange}
-              fullWidth
-              sx={{ borderRadius: 1 }}
-              label="Número de Parcelas"
-            >
-              <MenuItem value={1}>1x de </MenuItem>
-              <MenuItem value={2}>2x de </MenuItem>
-              <MenuItem value={3}>3x de</MenuItem>
-              <MenuItem value={4}>4x de </MenuItem>
-              <MenuItem value={5}>5x de </MenuItem>
-              <MenuItem value={6}>6x de </MenuItem>
-              <MenuItem value={7}>7x de </MenuItem>
-              <MenuItem value={8}>8x de </MenuItem>
-              <MenuItem value={9}>9x de </MenuItem>
-              <MenuItem value={10}>10x de </MenuItem>
-              <MenuItem value={11}>11x de </MenuItem>
-              <MenuItem value={12}>12x de </MenuItem>
-            </Select>
             <Button
               variant="contained"
               fullWidth
@@ -343,18 +363,17 @@ export default function RegistrarAssinatura({ slug }: ISlugProps) {
           </FlexWrap>
           <DivTermos>
             <p>
-              Ao pressionar “Concordar e assinar”, você confirma que tem 18 anos
-              ou mais; ter lido e concordado com os Termos de Assinatura; e
-              reconhece e concorda que, após o término de qualquer período
-              promocional aplicável, seu método de pagamento será
-              automaticamente cobrado R$178,90 BRL / Ano até que você
-              eventualmente, cancele sua assinatura. Seus pagamentos serão
-              processados internacionalmente, portanto, taxas de transação
-              adicionais podem ser aplicaveis. Você pode cancelar sua assinatura
-              a qualquer momento, endo que esta terá efeito ao final do período
-              de assinatura atual. Não haverá nenhum reembolso ou crédito para
-              períodos parciais de assinatura. O valor da assinatura está
-              sujeita a alterações mediante notificação prévia.
+              Ao adquirir e ativar o plano Líder, você autoriza o App Líder a
+              realizar cobranças mensais automáticas até o cancelamento. Se
+              houver alguma alteração no preço, você receberá um aviso com
+              antecedência. Você pode consultar a data de renovação ou cancelar
+              a assinatura quando quiser na página da sua conta. Não são
+              emitidos reembolsos parciais. São aplicáveis os termos e condições
+              do Aplicato Líder.Esta é uma compra internacional, sujeita a uma
+              operação de câmbio, que será processada por um dos parceiros de
+              pagamento do Aplicativo Líder, de acordo com seus termos e
+              condições. Ao clicar em &quot;Comprar e Assinar&quot;, você dá
+              ciência e aceita os termos e as condições desta transação.
             </p>
           </DivTermos>
         </CardData>
