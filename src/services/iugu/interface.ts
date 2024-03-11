@@ -1,4 +1,5 @@
 export interface ICriarAssinatura {
-  token: string;
-  slug: string;
+  email: string;
+  nome: string;
+  cpfCnpj: string;
 }

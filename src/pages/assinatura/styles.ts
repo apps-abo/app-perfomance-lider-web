@@ -57,6 +57,7 @@ export const DivTextLogin = styled.div`
     font-family: "Roboto";
     font-size: 14px;
     text-align: center;
+    margin-top: 15px;
   }
 
   @media (max-width: 768px) {
@@ -109,6 +110,7 @@ export const FlexWrap = styled.div`
   justify-content: center;
   flex-direction: column;
   width: 80%;
+  margin-bottom: 10px;
   @media (max-width: 768px) {
     width: 90%;
   }
