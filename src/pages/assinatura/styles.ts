@@ -57,6 +57,7 @@ export const DivTextLogin = styled.div`
     font-family: "Roboto";
     font-size: 14px;
     text-align: center;
+    margin-top: 15px;
   }
 
   @media (max-width: 768px) {
@@ -94,12 +95,19 @@ export const DivImages = styled.div`
 `;
 
 export const DivTermos = styled.div`
-  margin: 20px;
   p {
     font-family: "Roboto";
-    font-size: 14px;
+    font-size: 15px;
+    opacity: 0.7;
     text-align: center;
+    @media (max-width: 450px) {
+      font-size: 10px;
+    }
   }
+  margin-top: 30px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 `;
 
 export const FlexWrap = styled.div`
@@ -109,6 +117,7 @@ export const FlexWrap = styled.div`
   justify-content: center;
   flex-direction: column;
   width: 80%;
+  margin-bottom: 10px;
   @media (max-width: 768px) {
     width: 90%;
   }

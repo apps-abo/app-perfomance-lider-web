@@ -27,7 +27,7 @@ export default function SuccessPage() {
               style={{ borderRadius: "10px" }}
             />
             <DivLink>
-              <h1>Sua assinatura foi realizada com sucesso!</h1>
+              <h1>Foi enviado para o seu email um link de pagamento!</h1>
               <p>
                 Mais informações entre em contato via{" "}
                 <a href="https://api.whatsapp.com/send?phone=555599136380&text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20o%20suporte%20do%20aplicativo%20L%C3%ADder.">
