@@ -95,12 +95,19 @@ export const DivImages = styled.div`
 `;
 
 export const DivTermos = styled.div`
-  margin: 20px;
   p {
     font-family: "Roboto";
-    font-size: 14px;
+    font-size: 15px;
+    opacity: 0.7;
     text-align: center;
+    @media (max-width: 450px) {
+      font-size: 10px;
+    }
   }
+  margin-top: 30px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 `;
 
 export const FlexWrap = styled.div`

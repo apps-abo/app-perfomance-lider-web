@@ -9,7 +9,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
 import * as yup from "yup";
-import { Modal } from "antd";
+import { Spin, Modal } from "antd";
 
 import InputMask from "react-input-mask";
 
@@ -55,6 +55,7 @@ const validationSchema = yup.object({
 
 export default function RegistrarAssinatura() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const {
     handleSubmit,
@@ -68,6 +69,7 @@ export default function RegistrarAssinatura() {
   const submitForm = useCallback(
     async (data: IForm) => {
       try {
+        setLoading(true);
         const request = await criarAssinatura(data);
         if (request.status == 200) {
           const secureUrl = request.data;
@@ -83,6 +85,8 @@ export default function RegistrarAssinatura() {
           title: "Houve um erro ao tentar cadastrar seus dados",
           content: "Tente mais tarde!",
         });
+      } finally {
+        setLoading(false);
       }
     },
     [router]
@@ -102,6 +106,11 @@ export default function RegistrarAssinatura() {
           description="Pagina para realizar a assinatura  do aplicativo Líder da Associação Brasileira de Ontopsicologia"
         />
       }
+     {loading && (
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: 9999, backdropFilter: 'blur(10px)' }}>
+          <Spin spinning={true} tip="Carregando" size="large" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
+        </div>
+      )}
       <PageMain>
         <TrocaImagensAutomatica />
         <CardData>
@@ -113,6 +122,7 @@ export default function RegistrarAssinatura() {
               height={80}
               style={{ borderRadius: "10px" }}
             />
+
             <DivTextLogin>
               <h1>Assinatura App Líder</h1>
               <p>Insira seus dados para efetuar sua assinatura</p>
