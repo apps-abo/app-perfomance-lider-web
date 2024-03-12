@@ -48,7 +48,7 @@ const validationSchema = yup.object({
     .required("Campo obrigatório"),
   cpfCnpj: yup
     .string()
-    .min(1, "Cpf ou Cnpj deve ter no minimo 14 caracteres")
+    .min(11, "Cpf ou Cnpj deve ter no minimo 11 caracteres")
     .required("Campo obrigatório"),
   email: yup.string().required("Campo obrigatório"),
 });
@@ -56,6 +56,7 @@ const validationSchema = yup.object({
 export default function RegistrarAssinatura() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [mask, setMask] = useState("");
 
   const {
     handleSubmit,
@@ -92,10 +93,30 @@ export default function RegistrarAssinatura() {
     [router]
   );
 
+  let timer: NodeJS.Timeout;
+
   const handleChange =
     (name: keyof IForm) =>
     (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setValue(name, e.target.value, { shouldValidate: true });
+      const inputValue = e.target.value;
+
+      if (!inputValue) {
+        setMask("");
+        return;
+      }
+
+      const onlyNumbers = inputValue.replace(/\D/g, "");
+
+      const applyMask = () => {
+        if (onlyNumbers.length <= 11) {
+          setMask("999.999.999-99");
+        } else {
+          setMask("99.999.999/9999-99");
+        }
+      };
+
+      clearTimeout(timer);
+      timer = setTimeout(applyMask, 300);
     };
 
   return (
@@ -106,9 +127,30 @@ export default function RegistrarAssinatura() {
           description="Pagina para realizar a assinatura  do aplicativo Líder da Associação Brasileira de Ontopsicologia"
         />
       }
-     {loading && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: 9999, backdropFilter: 'blur(10px)' }}>
-          <Spin spinning={true} tip="Carregando" size="large" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
+      {loading && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            zIndex: 9999,
+            backdropFilter: "blur(10px)",
+          }}
+        >
+          <Spin
+            spinning={true}
+            tip="Carregando"
+            size="large"
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+            }}
+          />
         </div>
       )}
       <PageMain>
@@ -166,6 +208,13 @@ export default function RegistrarAssinatura() {
               }
               inputProps={{ "data-iugu": "cpfCpnj" }}
               sx={{ borderRadius: 1 }}
+              InputProps={{
+                inputComponent: InputMask as any,
+                inputProps: {
+                  mask: mask,
+                  maskChar: " ",
+                },
+              }}
             />
             <TextField
               margin="normal"
