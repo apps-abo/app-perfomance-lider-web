@@ -98,6 +98,7 @@ export default function RegistrarAssinatura() {
   const handleChange =
     (name: keyof IForm) =>
     (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setValue(name, e.target.value, { shouldValidate: true });
       const inputValue = e.target.value;
 
       if (!inputValue) {
@@ -175,7 +176,7 @@ export default function RegistrarAssinatura() {
               fullWidth
               id="nome"
               label="Nome"
-              name="name"
+              name="nome"
               type="text"
               onChange={handleChange("nome")}
               autoFocus
@@ -255,10 +256,10 @@ export default function RegistrarAssinatura() {
           <DivTermos>
             <p>
               Ao adquirir e ativar o plano Líder, você autoriza o App Líder a
-              realizar cobranças mensais automáticas até o cancelamento. Se
-              houver alguma alteração no preço, você receberá um aviso com
-              antecedência. Você pode consultar a data de renovação ou cancelar
-              a assinatura quando quiser na página da sua conta. Não são
+              realizar cobranças até o cancelamento. Se houver alguma alteração
+              no preço, você receberá um aviso com antecedência. Você pode
+              consultar a data de renovação ou cancelar a assinatura quando
+              quiser na página da sua conta dnetro do App Líder. Não são
               emitidos reembolsos parciais. São aplicáveis os termos e condições
               do Aplicato Líder.Esta é uma compra internacional, sujeita a uma
               operação de câmbio, que será processada por um dos parceiros de
