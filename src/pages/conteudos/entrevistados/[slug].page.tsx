@@ -29,13 +29,13 @@ const NavegarParaEntrevistados: FC<NavegarParaEntrevistadosProps> = ({slug, entr
     console.log(slug)
     const userAgent = navigator.userAgent || navigator.vendor;
     if (/android/i.test(userAgent)) {
-      window.location.href = `intent:#Intent;scheme=mobile-app-lider://entrevistados?slug=${slug};package=br.com.performancelider.applider;end`;
+      window.location.href = `intent:#Intent;scheme=mobile-app-lider://video-details?${slug};package=br.com.performancelider.applider;end`;
       return;
     }
     var algo = window as any;
     if (/iPad|iPhone|iPod/.test(userAgent) && !algo.MSStream) {
-      // alert(`app-ontopsicologia://${configRoute()}`)
-      window.location.href = `mobile-app-lider://entrevistados?slug=${slug}`;
+     
+      window.location.href = `mobile-app-lider://video-details?slug=${slug}`;
       return;
     }
     setMessage("Você precisa estar em um dispositivo móvel para ter acesso!");
