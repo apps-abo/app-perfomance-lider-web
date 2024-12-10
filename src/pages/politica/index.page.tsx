@@ -9,7 +9,8 @@ interface PolicyData {
 
 const Politica = () => {
   const [policy, setPolicy] = useState<PolicyData | null>(null);
-  
+
+  useEffect(() => {
     const fetchPolicy = async () => {
       try {
         const response = await policyTerms("TyWyRjWot0aNhFvj6Lqxzg==");
@@ -26,10 +27,10 @@ const Politica = () => {
   return (
     <>
       <Seo
-        title="Politica de Privacidade "
-        description="Politica de Privacidade Aplicativo Líder da Associação Brasileira de Ontopsicologia"
+        title="Política de Privacidade"
+        description="Política de Privacidade Aplicativo Líder da Associação Brasileira de Ontopsicologia"
       />
-     <Container>
+      <Container>
         <Title>Política de Privacidade do Aplicativo Líder</Title>
         <Content>
           {policy ? (
