@@ -9,11 +9,10 @@ interface PolicyData {
 
 const Politica = () => {
   const [policy, setPolicy] = useState<PolicyData | null>(null);
-  console.log("oi");
-  useEffect(() => {
+  
     const fetchPolicy = async () => {
       try {
-        const response = await policyTerms("Hz45RJ5uukSfyOEv3wNxwA==");
+        const response = await policyTerms("TyWyRjWot0aNhFvj6Lqxzg==");
         console.log("response.data", response.data);
         setPolicy(response.data);
       } catch (error) {
