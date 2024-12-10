@@ -9,11 +9,11 @@ interface PolicyData {
 
 const Termos = () => {
   const [terms, setTerms] = useState<PolicyData | null>(null);
-  console.log("oi");
+
   useEffect(() => {
     const fetchTerms = async () => {
       try {
-        const response = await policyTerms("Hz45RJ5uukSfyOEv3wNxwA==");
+        const response = await policyTerms("yDkAZWssz0eLqfZ8TKv8kw==");
         console.log("response.data", response.data);
         setTerms(response.data);
       } catch (error) {
