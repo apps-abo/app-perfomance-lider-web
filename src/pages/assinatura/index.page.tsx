@@ -17,15 +17,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Seo from "@/components/Seo";
 
 import { criarAssinatura } from "@/services/iugu";
-import {
-  CardData,
-  CreditCard,
-  DivImages,
-  DivTermos,
-  DivTextLogin,
-  FlexWrap,
-  PageMain,
-} from "./styles";
+import { CardData, DivTermos, DivText, FlexWrap, PageMain } from "./styles";
 
 import React from "react";
 import TrocaImagensAutomatica from "@/components/SliderImage";
@@ -67,31 +59,37 @@ export default function RegistrarAssinatura() {
     resolver: yupResolver(validationSchema),
   });
 
-  const submitForm = useCallback(
-    async (data: IForm) => {
-      try {
-        setLoading(true);
-        const request = await criarAssinatura(data);
-        if (request.status == 200) {
-          const secureUrl = request.data;
-          window.location.href = secureUrl;
-        }
-        if (request.status == 400) {
-          router.push("/assinatura/erro");
-        } else if (request.status == 500) {
-          router.push("/assinatura/erro");
-        }
-      } catch (error) {
-        Modal.error({
-          title: "Houve um erro ao tentar cadastrar seus dados",
-          content: "Tente mais tarde!",
-        });
-      } finally {
-        setLoading(false);
+  const submitForm = useCallback(async (data: IForm) => {
+    try {
+      setLoading(true);
+      const request = await criarAssinatura(data);
+      if (request.status == 200) {
+        const secureUrl = request.data;
+        window.location.href = secureUrl;
       }
-    },
-    [router]
-  );
+    } catch (error) {
+      Modal.error({
+        title: "Houve um erro ao tentar cadastrar seus dados",
+        content: (
+          <>
+            <Typography>
+              Tente novamente mais tarde ou contate o{" "}
+              <a
+                href="https://api.whatsapp.com/send?phone=555599136380&text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20o%20suporte%20do%20aplicativo%20L%C3%ADder"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                suporte
+              </a>{" "}
+              do aplicativo Líder!
+            </Typography>
+          </>
+        ),
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   let timer: NodeJS.Timeout;
 
@@ -99,25 +97,24 @@ export default function RegistrarAssinatura() {
     (name: keyof IForm) =>
     (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setValue(name, e.target.value, { shouldValidate: true });
-      const inputValue = e.target.value;
+      const digitsOnly = e.target.value.replace(/[^0-9]/g, "");
+      e.target.value = digitsOnly;
 
-      if (!inputValue) {
-        setMask("");
+      if (!digitsOnly) {
+        setMask(""); 
         return;
       }
-
-      const onlyNumbers = inputValue.replace(/\D/g, "");
-
       const applyMask = () => {
-        if (onlyNumbers.length <= 11) {
+        if (digitsOnly.length === 11) {
           setMask("999.999.999-99");
-        } else {
+        }
+        if (digitsOnly.length > 11) {
           setMask("99.999.999/9999-99");
         }
       };
 
       clearTimeout(timer);
-      timer = setTimeout(applyMask, 300);
+      timer = setTimeout(applyMask, 800);
     };
 
   return (
@@ -166,10 +163,10 @@ export default function RegistrarAssinatura() {
               style={{ borderRadius: "10px" }}
             />
 
-            <DivTextLogin>
+            <DivText>
               <h1>Assinatura App Líder</h1>
               <p>Insira seus dados para efetuar sua assinatura</p>
-            </DivTextLogin>
+            </DivText>
             <TextField
               margin="normal"
               required
@@ -259,12 +256,12 @@ export default function RegistrarAssinatura() {
               realizar cobranças até o cancelamento. Se houver alguma alteração
               no preço, você receberá um aviso com antecedência. Você pode
               consultar a data de renovação ou cancelar a assinatura quando
-              quiser na página da sua conta dnetro do App Líder. Não são
+              quiser na página da sua conta dentro do App Líder. Não são
               emitidos reembolsos parciais. São aplicáveis os termos e condições
               do Aplicato Líder.Esta é uma compra internacional, sujeita a uma
               operação de câmbio, que será processada por um dos parceiros de
               pagamento do Aplicativo Líder, de acordo com seus termos e
-              condições. Ao clicar em &quot;Comprar e Assinar&quot;, você dá
+              condições. Ao clicar em &quot;Concordar e Assinar&quot;, você dá
               ciência e aceita os termos e as condições desta transação.
             </p>
           </DivTermos>

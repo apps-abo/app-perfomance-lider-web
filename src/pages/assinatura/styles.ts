@@ -40,7 +40,7 @@ export const DivLogoImage = styled.div`
     max-width: 100px;
   }
 `;
-export const DivTextLogin = styled.div`
+export const DivText = styled.div`
   margin: 5% 0;
   display: flex;
   align-items: center;
@@ -133,6 +133,37 @@ export const TextDev = styled.div`
     opacity: 0.7;
     @media (max-width: 450px) {
       font-size: 10px;
+    }
+  }
+`;
+
+export const DivLinkValid = styled.div`
+  margin: 5% 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
+  grid-gap: 2vh;
+  h1 {
+    font-family: "Roboto";
+    font-weight: 700;
+    font-size: 22px;
+    color: #005bab;
+    @media (max-width: 450px) {
+      font-size: 1rem;
+      text-align: center;
+      width: 90%;
+    }
+  }
+  p {
+    font-family: "Roboto";
+    font-size: 18px;
+    text-align: center;
+    @media (max-width: 450px) {
+      font-size: 1rem;
+      width: 90%;
     }
   }
 `;
