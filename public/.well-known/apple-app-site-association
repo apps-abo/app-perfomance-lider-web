@@ -8,11 +8,11 @@
         ],
         "components": [
           {
-            "/": "/conteudos/",
+            "/": "/conteudos/*",
             "comment": "Conteudos compartilhados"
           },
           {
-            "/": "/lider/",
+            "/": "/lider/*",
             "comment": "Links com query params (audio-details, materias etc.)"
           }
         ]
