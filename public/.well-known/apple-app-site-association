@@ -3,18 +3,14 @@
     "apps": [],
     "details": [
       {
-        "appIDs": [
-          "KSM2K49423.br.com.performancelider.applider"
-        ],
-        "components": [
-          {
-            "/": "/conteudos/*",
-            "comment": "Conteudos compartilhados"
-          },
-          {
-            "/": "/lider/*",
-            "comment": "Links com query params (audio-details, materias etc.)"
-          }
+        "appID": "KSM2K49423.br.com.performancelider.applider",
+        "paths": [
+          "/inicio",
+          "/conteudos/planos",
+          "/conteudos/materias/*",
+          "/conteudos/entrevistados/*",
+          "/lider",
+          "/lider/*"
         ]
       }
     ]

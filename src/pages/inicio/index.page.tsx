@@ -1,15 +1,17 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 
 import { Icon, IconWrapper, Main, Message } from "./styles";
 
 const INITIAL_MESSAGE = "Voce esta sendo direcionado para o App Performance Lider!";
+const IOS_MESSAGE =
+  "No iPhone/iPad, abra este link a partir do compartilhamento original para abrir o app.";
 const DESKTOP_MESSAGE = "Voce precisa estar em um dispositivo movel para abrir o app.";
 
 export default function Inicio() {
   const [message, setMessage] = useState(INITIAL_MESSAGE);
 
-  const openAppHome = useCallback(() => {
+  useEffect(() => {
     const userAgent = navigator.userAgent || navigator.vendor;
 
     if (/android/i.test(userAgent)) {
@@ -20,16 +22,12 @@ export default function Inicio() {
 
     const browserWindow = window as any;
     if (/iPad|iPhone|iPod/.test(userAgent) && !browserWindow.MSStream) {
-      window.location.href = "mobile-app-lider://inicio";
+      setMessage(IOS_MESSAGE);
       return;
     }
 
     setMessage(DESKTOP_MESSAGE);
   }, []);
-
-  useEffect(() => {
-    openAppHome();
-  }, [openAppHome]);
 
   return (
     <>

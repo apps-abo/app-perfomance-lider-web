@@ -9,7 +9,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Content-Type',
-            value: 'application/json; charset=utf-8',
+            value: 'application/json',
           },
         ],
       },
@@ -18,7 +18,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Content-Type',
-            value: 'application/json; charset=utf-8',
+            value: 'application/json',
           },
         ],
       },
