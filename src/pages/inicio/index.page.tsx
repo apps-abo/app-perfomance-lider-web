@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Head from "next/head";
 
-import { Icon, IconWrapper, Main, Message, OpenButton } from "./styles";
+import { Icon, IconWrapper, Main, Message } from "./styles";
 
 const INITIAL_MESSAGE = "Voce esta sendo direcionado para o App Performance Lider!";
 const DESKTOP_MESSAGE = "Voce precisa estar em um dispositivo movel para abrir o app.";
@@ -47,8 +47,6 @@ export default function Inicio() {
         </IconWrapper>
 
         <Message>{message}</Message>
-
-        <OpenButton onClick={openAppHome}>Abrir app</OpenButton>
       </Main>
     </>
   );
