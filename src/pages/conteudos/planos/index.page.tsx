@@ -1,67 +1,41 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
-import { Main, Text, Button, Image, ImagemFund, ImageLider } from "./style";
-import { GetServerSideProps } from "next";
+import { Main, Image, ImageLider } from "./style";
 import Head from "next/head";
 
-
-
-const NavegarParaPlanos= () => {
-  const [message, setMessage] = useState(
-    "Você está sendo direcionado para o App Performance Líder!"
-  );
-
+const NavegarParaPlanos = () => {
   useEffect(() => {
-    click();
+    const userAgent = navigator.userAgent || navigator.vendor;
+
+    if (/android/i.test(userAgent)) {
+      window.location.href =
+        "intent:#Intent;scheme=mobile-app-lider://planos;package=br.com.performancelider.applider;end";
+      return;
+    }
+
+    const browserWindow = window as any;
+    if (/iPad|iPhone|iPod/.test(userAgent) && !browserWindow.MSStream) {
+      window.location.href = "mobile-app-lider://planos";
+    }
   }, []);
 
-
-  const click = () => {
-    const userAgent = navigator.userAgent || navigator.vendor;
-    if (/android/i.test(userAgent)) {
-      window.location.href = `intent:#Intent;scheme=mobile-app-lider://planos;package=br.com.performancelider.applider;end`;
-
-      return;
-    }
-    var algo = window as any;
-    if (/iPad|iPhone|iPod/.test(userAgent) && !algo.MSStream) {
-      // alert(`app-ontopsicologia://${configRoute()}`)
-      window.location.href = `mobile-app-lider://planos`;
-      return;
-    }
-    setMessage("Você precisa estar em um dispositivo móvel para ter acesso!");
-    console.log(userAgent);
-  };
-  
   return (
     <>
       <Head>
-        <title>Planos - App Performance Líder</title>
+        <title>Planos - App Performance Lider</title>
+        <meta name="description" content="Selecao de plano do App Performance Lider." />
+        <meta property="og:image" content="/images/Favico-AppLider2023.png" />
+        <meta property="og:title" content="App Performance Lider" />
         <meta
-          name="description"
-          content="Seleção de plano do App Perfomance Líder."
+          property="og:description"
+          content="Selecao de plano do App Performance Lider."
         />
-       <meta property="og:image" content="/images/Favico-AppLider2023.png" />
-       <meta property="og:title" content="App Performance Líder"/>
-       <meta property="og:description" 
-          content="Seleção de plano do App Perfomance Líder." />
       </Head>
       <div>
         <Main>
           <Image>
-            <ImageLider
-              src="/images/Favico-AppLider2023.png"
-              alt="Minha Imagem"
-            />
+            <ImageLider src="/images/Favico-AppLider2023.png" alt="Icone do App Lider" />
           </Image>
-          {/* <ImagemFund src={logo} /> */}
-          {/* <Text>{message}</Text> */}
-          {message ===
-          "Você está sendo direcionado para o App Performance Líder!" ? (
-            <Button onClick={click}>Acessar conteúdo</Button>
-          ) : (
-            <div />
-          )}
         </Main>
       </div>
     </>
