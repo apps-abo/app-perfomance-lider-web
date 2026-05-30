@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 
-import { Main, Text, Image, ImageLider } from "../../materias/style";
+import { Main, Text, Image, ImageLider } from "../materias/style";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { buscarInformacoes } from "@/services/podcasts";
@@ -25,7 +25,7 @@ const NavegarParaPodcasts: FC<NavegarParaPodcastsProps> = ({ slug, podcast }) =>
     const userAgent = navigator.userAgent || navigator.vendor;
 
     if (/android/i.test(userAgent)) {
-      window.location.href = `intent:#Intent;scheme=mobile-app-lider://conteudos/podcasts?slug=${slug};package=br.com.performancelider.applider;end`;
+      window.location.href = `intent:#Intent;scheme=mobile-app-lider://conteudos/podcasts/${slug};package=br.com.performancelider.applider;end`;
       return;
     }
 
