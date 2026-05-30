@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 
-import { Main, Text, Image, ImageLider } from "../../materias/style";
+import { Main, Text, Image, ImageLider } from "../materias/style";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { buscarInformacoes } from "@/services/podcasts";
