@@ -1,8 +1,7 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { Main, Text, Image, ImageLider } from "./style";
+import { Main, Text, Image, ImageLider } from "../../conteudos/materias/style";
 import { GetServerSideProps } from "next";
-import { buscarInformacoes } from "@/services/entrevistados";
 import Head from "next/head";
 import { abrirApp, APP_STORE_ID } from "@/utils/abrirApp";
 
@@ -11,42 +10,28 @@ const STORE_MESSAGE =
   "Se o app nao abrir, voce sera direcionado para a loja para instala-lo.";
 const DESKTOP_MESSAGE = "Voce precisa estar em um dispositivo movel para abrir o app.";
 
-interface NavegarParaEntrevistadosProps {
-  slug: string;
-  entrevistado: {
-    titulo: string;
-    banner: string;
-    categorias: string[];
-  };
+interface NavegarParaAudioProps {
+  id: string;
+  type: string;
 }
 
-const NavegarParaEntrevistados: FC<NavegarParaEntrevistadosProps> = ({
-  slug,
-  entrevistado,
-}) => {
+const NavegarParaAudio = ({ id, type }: NavegarParaAudioProps) => {
   const [message, setMessage] = useState(INITIAL_MESSAGE);
 
   useEffect(() => {
-    const plataforma = abrirApp(`conteudos/entrevistados/${slug}`);
+    const query = new URLSearchParams({ id, ...(type ? { type } : {}) }).toString();
+    const plataforma = abrirApp(`lider/audio-details?${query}`);
     setMessage(plataforma === "desktop" ? DESKTOP_MESSAGE : STORE_MESSAGE);
-  }, [slug]);
+  }, [id, type]);
 
   return (
     <>
       <Head>
         <meta name="apple-itunes-app" content={`app-id=${APP_STORE_ID}`} />
-        <title>
-          App Performance Lider - {entrevistado.titulo} (
-          {entrevistado.categorias.join(", ")})
-        </title>
+        <title>Audio - App Performance Lider</title>
         <meta name="description" content="Acesse o link direto ao conteudo!" />
-        <meta property="og:image" content={entrevistado.banner} />
-        <meta
-          property="og:title"
-          content={`App Performance Lider - ${entrevistado.titulo} (${entrevistado.categorias.join(
-            ", "
-          )})`}
-        />
+        <meta property="og:image" content="/images/Favico-AppLider2023.png" />
+        <meta property="og:title" content="App Performance Lider" />
         <meta property="og:description" content="Acesse o link direto ao conteudo!" />
       </Head>
       <div>
@@ -61,15 +46,15 @@ const NavegarParaEntrevistados: FC<NavegarParaEntrevistadosProps> = ({
   );
 };
 
-export default NavegarParaEntrevistados;
+export default NavegarParaAudio;
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { data } = await buscarInformacoes(query.slug as string);
+  const id = typeof query.id === "string" ? query.id : "";
+  const type = typeof query.type === "string" && query.type !== "undefined" ? query.type : "";
 
-  return {
-    props: {
-      slug: query.slug,
-      entrevistado: data,
-    },
-  };
+  if (!id || id === "undefined") {
+    return { redirect: { destination: "/inicio", permanent: false } };
+  }
+
+  return { props: { id, type } };
 };

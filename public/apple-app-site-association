@@ -9,6 +9,7 @@
           "/conteudos/planos",
           "/conteudos/materias/*",
           "/conteudos/entrevistados/*",
+          "/conteudos/podcasts/*",
           "/lider",
           "/lider/*"
         ]

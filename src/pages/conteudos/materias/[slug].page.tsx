@@ -3,11 +3,12 @@ import React, { FC, useEffect, useState } from "react";
 import { Main, Text, Image, ImageLider } from "./style";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
+import { abrirApp, APP_STORE_ID } from "@/utils/abrirApp";
 import { buscarInformacoes } from "@/services/materias";
 
 const INITIAL_MESSAGE = "Voce esta sendo direcionado para o App Performance Lider!";
-const IOS_MESSAGE =
-  "No iPhone/iPad, abra este link a partir do compartilhamento original para abrir o conteudo no app.";
+const STORE_MESSAGE =
+  "Se o app nao abrir, voce sera direcionado para a loja para instala-lo.";
 const DESKTOP_MESSAGE = "Voce precisa estar em um dispositivo movel para abrir o app.";
 
 interface NavegarParaMateriasProps {
@@ -23,25 +24,14 @@ const NavegarParaMaterias: FC<NavegarParaMateriasProps> = ({ slug, materia }) =>
   const [message, setMessage] = useState(INITIAL_MESSAGE);
 
   useEffect(() => {
-    const userAgent = navigator.userAgent || navigator.vendor;
-
-    if (/android/i.test(userAgent)) {
-      window.location.href = `intent:#Intent;scheme=mobile-app-lider://conteudos/materias/${slug};package=br.com.performancelider.applider;end`;
-      return;
-    }
-
-    const browserWindow = window as any;
-    if (/iPad|iPhone|iPod/.test(userAgent) && !browserWindow.MSStream) {
-      setMessage(IOS_MESSAGE);
-      return;
-    }
-
-    setMessage(DESKTOP_MESSAGE);
+    const plataforma = abrirApp(`conteudos/materias/${slug}`);
+    setMessage(plataforma === "desktop" ? DESKTOP_MESSAGE : STORE_MESSAGE);
   }, [slug]);
 
   return (
     <>
       <Head>
+        <meta name="apple-itunes-app" content={`app-id=${APP_STORE_ID}`} />
         <title>
           App Performance Lider - {materia.titulo} ({materia.categorias.join(", ")})
         </title>
