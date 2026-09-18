@@ -16,14 +16,29 @@ export function detectarPlataforma(): Plataforma {
   return "desktop";
 }
 
+export function urlDaLoja(plataforma: Plataforma): string | null {
+  if (plataforma === "android") return PLAY_STORE_URL;
+  if (plataforma === "ios") return APP_STORE_URL;
+  return null;
+}
+
+/** Abre o app pelo esquema customizado (mobile-app-lider://...). */
+export function abrirPeloEsquema(path: string) {
+  window.location.href = `${APP_SCHEME}://${path.replace(/^\/+/, "")}`;
+}
+
 /**
  * Tenta abrir o app no caminho informado (ex: "conteudos/podcasts/meu-slug").
- * Se o app nao estiver instalado, direciona para a loja.
  *
  * Obs: quando os App Links (Android) / Universal Links (iOS) estao verificados,
  * o sistema abre o app direto e esta pagina nem chega a carregar. Este codigo
- * cobre o caso em que o link caiu no navegador (app nao instalado, link aberto
- * dentro de webview de outro app, etc).
+ * cobre o caso em que o link caiu no navegador (app nao instalado, link colado
+ * na barra de endereco, webview de outro app, etc).
+ *
+ * No iOS NAO redirecionamos para a loja automaticamente: o Safari costuma
+ * bloquear a abertura do esquema customizado sem um toque do usuario, e o
+ * usuario que ja tem o app acabava indo parar na App Store. Em vez disso a
+ * pagina mostra os botoes "Abrir no app" e "Baixar na loja".
  */
 export function abrirApp(path: string): Plataforma {
   const plataforma = detectarPlataforma();
@@ -38,24 +53,7 @@ export function abrirApp(path: string): Plataforma {
   }
 
   if (plataforma === "ios") {
-    // Tenta o esquema customizado; se o app abrir, a pagina fica oculta e
-    // o timer e cancelado. Caso contrario, segue para a App Store.
-    let saiuDaPagina = false;
-    const onVisibility = () => {
-      if (document.hidden) saiuDaPagina = true;
-    };
-    document.addEventListener("visibilitychange", onVisibility);
-    window.addEventListener("pagehide", onVisibility);
-
-    window.location.href = `${APP_SCHEME}://${caminho}`;
-
-    setTimeout(() => {
-      document.removeEventListener("visibilitychange", onVisibility);
-      window.removeEventListener("pagehide", onVisibility);
-      if (!saiuDaPagina && !document.hidden) {
-        window.location.href = APP_STORE_URL;
-      }
-    }, 1800);
+    abrirPeloEsquema(caminho);
     return plataforma;
   }
 

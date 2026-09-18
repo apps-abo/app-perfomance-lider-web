@@ -1,20 +1,26 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
-import { abrirApp, APP_STORE_ID } from "@/utils/abrirApp";
+import { abrirApp, APP_STORE_ID, type Plataforma } from "@/utils/abrirApp";
+import BotoesApp from "@/components/BotoesApp";
 
 import { Icon, IconWrapper, Main, Message } from "./styles";
 
 const INITIAL_MESSAGE = "Voce esta sendo direcionado para o App Performance Lider!";
 const STORE_MESSAGE =
-  "Se o app nao abrir, voce sera direcionado para a loja para instala-lo.";
+  "Se o app nao abrir sozinho, use o botao abaixo.";
 const DESKTOP_MESSAGE = "Voce precisa estar em um dispositivo movel para abrir o app.";
 
 export default function Inicio() {
   const [message, setMessage] = useState(INITIAL_MESSAGE);
+  const [plataforma, setPlataforma] = useState<Plataforma | null>(null);
+  const [caminho, setCaminho] = useState("");
 
   useEffect(() => {
-    const plataforma = abrirApp("inicio");
-    setMessage(plataforma === "desktop" ? DESKTOP_MESSAGE : STORE_MESSAGE);
+    const alvo = "inicio";
+    setCaminho(alvo);
+    const detectada = abrirApp(alvo);
+    setPlataforma(detectada);
+    setMessage(detectada === "desktop" ? DESKTOP_MESSAGE : STORE_MESSAGE);
   }, []);
 
   return (
@@ -34,6 +40,7 @@ export default function Inicio() {
         </IconWrapper>
 
         <Message>{message}</Message>
+        <BotoesApp plataforma={plataforma} path={caminho} />
       </Main>
     </>
   );

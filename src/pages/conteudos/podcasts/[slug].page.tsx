@@ -3,12 +3,13 @@ import React, { FC, useEffect, useState } from "react";
 import { Main, Text, Image, ImageLider } from "../materias/style";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { abrirApp, APP_STORE_ID } from "@/utils/abrirApp";
+import { abrirApp, APP_STORE_ID, type Plataforma } from "@/utils/abrirApp";
+import BotoesApp from "@/components/BotoesApp";
 import { buscarInformacoes } from "@/services/podcasts";
 
 const INITIAL_MESSAGE = "Voce esta sendo direcionado para o App Performance Lider!";
 const STORE_MESSAGE =
-  "Se o app nao abrir, voce sera direcionado para a loja para instala-lo.";
+  "Se o app nao abrir sozinho, use o botao abaixo.";
 const DESKTOP_MESSAGE = "Voce precisa estar em um dispositivo movel para abrir o app.";
 
 interface NavegarParaPodcastsProps {
@@ -21,10 +22,15 @@ interface NavegarParaPodcastsProps {
 
 const NavegarParaPodcasts: FC<NavegarParaPodcastsProps> = ({ slug, podcast }) => {
   const [message, setMessage] = useState(INITIAL_MESSAGE);
+  const [plataforma, setPlataforma] = useState<Plataforma | null>(null);
+  const [caminho, setCaminho] = useState("");
 
   useEffect(() => {
-    const plataforma = abrirApp(`conteudos/podcasts/${slug}`);
-    setMessage(plataforma === "desktop" ? DESKTOP_MESSAGE : STORE_MESSAGE);
+    const alvo = `conteudos/podcasts/${slug}`;
+    setCaminho(alvo);
+    const detectada = abrirApp(alvo);
+    setPlataforma(detectada);
+    setMessage(detectada === "desktop" ? DESKTOP_MESSAGE : STORE_MESSAGE);
   }, [slug]);
 
   return (
@@ -43,6 +49,7 @@ const NavegarParaPodcasts: FC<NavegarParaPodcastsProps> = ({ slug, podcast }) =>
             <ImageLider src="/images/Favico-AppLider2023.png" alt="Icone do App Lider" />
           </Image>
           <Text>{message}</Text>
+          <BotoesApp plataforma={plataforma} path={caminho} />
         </Main>
       </div>
     </>

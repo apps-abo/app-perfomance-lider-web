@@ -4,11 +4,12 @@ import { Main, Text, Image, ImageLider } from "./style";
 import { GetServerSideProps } from "next";
 import { buscarInformacoes } from "@/services/entrevistados";
 import Head from "next/head";
-import { abrirApp, APP_STORE_ID } from "@/utils/abrirApp";
+import { abrirApp, APP_STORE_ID, type Plataforma } from "@/utils/abrirApp";
+import BotoesApp from "@/components/BotoesApp";
 
 const INITIAL_MESSAGE = "Voce esta sendo direcionado para o App Performance Lider!";
 const STORE_MESSAGE =
-  "Se o app nao abrir, voce sera direcionado para a loja para instala-lo.";
+  "Se o app nao abrir sozinho, use o botao abaixo.";
 const DESKTOP_MESSAGE = "Voce precisa estar em um dispositivo movel para abrir o app.";
 
 interface NavegarParaEntrevistadosProps {
@@ -25,10 +26,15 @@ const NavegarParaEntrevistados: FC<NavegarParaEntrevistadosProps> = ({
   entrevistado,
 }) => {
   const [message, setMessage] = useState(INITIAL_MESSAGE);
+  const [plataforma, setPlataforma] = useState<Plataforma | null>(null);
+  const [caminho, setCaminho] = useState("");
 
   useEffect(() => {
-    const plataforma = abrirApp(`conteudos/entrevistados/${slug}`);
-    setMessage(plataforma === "desktop" ? DESKTOP_MESSAGE : STORE_MESSAGE);
+    const alvo = `conteudos/entrevistados/${slug}`;
+    setCaminho(alvo);
+    const detectada = abrirApp(alvo);
+    setPlataforma(detectada);
+    setMessage(detectada === "desktop" ? DESKTOP_MESSAGE : STORE_MESSAGE);
   }, [slug]);
 
   return (
@@ -55,6 +61,7 @@ const NavegarParaEntrevistados: FC<NavegarParaEntrevistadosProps> = ({
             <ImageLider src="/images/Favico-AppLider2023.png" alt="Icone do App Lider" />
           </Image>
           <Text>{message}</Text>
+          <BotoesApp plataforma={plataforma} path={caminho} />
         </Main>
       </div>
     </>
